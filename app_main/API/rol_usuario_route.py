@@ -1,29 +1,21 @@
-import json
 from flask import Blueprint
-from flask import jsonify
-from flask import request
-from nucleo.controlador import controlador_usuario
-from app_main.conexion import db
-usuario_route = Blueprint("usuario_route", __name__,url_prefix='/usuario')
+from flask import jsonify, request
+from nucleo.controlador import controlador_rol_usuario
+
+rol_usuario_route = Blueprint("rol_usuario_route", __name__,url_prefix='/rol-usuario')
 
 
-
-@usuario_route.route('/agregar', methods=['POST'])
+@rol_usuario_route.route('/agregar', methods=['POST'])
 def agregar():
     try:
-        if controlador_usuario.agregar(
-            request.json["nombre"],
-            request.json["apellido_1"],
-            request.json["apellido_2"],
-            request.json["rfc"],
-            request.json["nombre_acceso"],
-            request.json["contrasena"],
-            request.json["rol_usuario"]):
-
+        if controlador_rol_usuario.agregar(
+                request.json["nombre"],
+                request.json["descripcion"]
+            ):
             return jsonify({
-                "estado" : "OK",
-                "mensaje": "Usuario registrado correctamente"
-            })
+                    "estado" : "OK",
+                    "mensaje": "Rol registrado correctamente"
+                })
         else:
             estado = "ERROR"
             mensaje = "Ha ocurrido un error al agregar el registro! Por favor verificalo con un administrador o revisa tu solicitud"    
@@ -43,36 +35,30 @@ def agregar():
         })
 
 
-@usuario_route.route('/modificar',methods=['POST'])
+@rol_usuario_route.route('/modificar', methods=['POST'])
 def modificar():
-    try:    
+    try:
         if "_id" not in request.json:
             return jsonify({
                 "estado" : "ADVERTENCIA",
-                "mensaje": "Ha ocurrido un error, es necesario proporcionar un id de usuario para modificar"
+                "mensaje": "Ha ocurrido un error, es necesario proporcionar un id de rol para modificar"
             })
-        if controlador_usuario.modificar(
-            request.json["_id"],
-            request.json["nombre"],
-            request.json["apellido_1"],
-            request.json["apellido_2"],
-            request.json["rfc"],
-            request.json["nombre_acceso"],
-            request.json["contrasena"],
-            request.json["rol_usuario"]
-        ):
+        if controlador_rol_usuario.modificar(
+                request.json["_id"],
+                request.json["nombre"],
+                request.json["descripcion"]
+            ):
             return jsonify({
-                "estado" : "OK",
-                "mensaje": "Usuario modificado correctamente"
-            })
+                    "estado" : "OK",
+                    "mensaje": "Rol modificado correctamente"
+                })
         else:
             estado = "ERROR"
-            mensaje = "Ha ocurrido un error al modificar el registro! Por favor verificalo con un administrador o revisa tu solicitud"
+            mensaje = "Ha ocurrido un error al modificar el registro! Por favor verificalo con un administrador o revisa tu solicitud"    
             return jsonify({
                 "estado"  : estado,
                 "mensaje" : mensaje
             })
-
 
     except Exception as e:
         estado = "ERROR"
@@ -84,18 +70,18 @@ def modificar():
             "excepcion":str(e)
         })
 
-@usuario_route.route('/desactivar', methods=["POST"])
+@rol_usuario_route.route('/desactivar', methods = ["POST"])
 def desactivar():
     try:    
         if "_id" not in request.json:
             return jsonify({
                 "estado" : "ADVERTENCIA",
-                "mensaje": "Ha ocurrido un error, es necesario proporcionar un id de usuario para desactivar"
+                "mensaje": "Ha ocurrido un error, es necesario proporcionar un id de rol para desactivar"
             })
-        if controlador_usuario.desactivar(request.json["_id"]):
+        if controlador_rol_usuario.desactivar(request.json["_id"]):
             return jsonify({
                 "estado" : "OK",
-                "mensaje": "Usuario desactivado correctamente"
+                "mensaje": "Rol desactivado correctamente"
             })
         else:
             estado = "ERROR"
@@ -114,29 +100,29 @@ def desactivar():
             "excepcion":str(e)
         })
 
-@usuario_route.route('/reactivar', methods=["POST"])
+@rol_usuario_route.route('/reactivar', methods = ["POST"])
 def reactivar():
     try:    
         if "_id" not in request.json:
             return jsonify({
                 "estado" : "ADVERTENCIA",
-                "mensaje": "Ha ocurrido un error, es necesario proporcionar un id de usuario para desactivar"
+                "mensaje": "Ha ocurrido un error, es necesario proporcionar un id de rol para reactivar"
             })
-        if controlador_usuario.reactivar(request.json["_id"]):
+        if controlador_rol_usuario.reactivar(request.json["_id"]):
             return jsonify({
                 "estado" : "OK",
-                "mensaje": "Usuario reactivado correctamente"
+                "mensaje": "Rol reactivado correctamente"
             })
         else:
             estado = "ERROR"
-            mensaje = "Ha ocurrido un error al reactivar el registro! Por favor verificalo con un administrador o revisa tu solicitud"
+            mensaje = "Ha ocurrido un error al reactivado el registro! Por favor verificalo con un administrador o revisa tu solicitud"
             return jsonify({
                 "estado"  : estado,
                 "mensaje" : mensaje
             })
     except Exception as e:
         estado = "ERROR"
-        mensaje = "Ha ocurrido un error al reactivar el registro! Por favor verificalo con un administrador o revisa tu solicitud"
+        mensaje = "Ha ocurrido un error al reactivado el registro! Por favor verificalo con un administrador o revisa tu solicitud"
         
         return jsonify({
             "estado"  : estado,
@@ -144,7 +130,8 @@ def reactivar():
             "excepcion":str(e)
         })
 
-@usuario_route.route('/consultar', methods=['POST'])
+
+@rol_usuario_route.route('/consultar', methods=['POST'])
 def consultar():
     estado = "OK"
     mensaje = "Información consultada correctamente"
@@ -155,25 +142,25 @@ def consultar():
 
         if "_id" not in request.json or request.json["_id"] == 0:
             print("test")
-            usuarios = controlador_usuario.consultar(0)
-            if len(usuarios)>0:
-                usuarios_json = []
-                for usuario in usuarios:
-                    usuario_dictionary = usuario.__dict__
-                    del usuario_dictionary['_sa_instance_state']
-                    usuarios_json.append(usuario_dictionary)
-                return jsonify(usuarios_json)            
+            roles = controlador_rol_usuario.consultar(0)
+            if len(roles)>0:
+                roles_json = []
+                for rol in roles:
+                    rol_dictionary = rol.__dict__
+                    del rol_dictionary['_sa_instance_state']
+                    roles_json.append(rol_dictionary)
+                return jsonify(roles_json)            
         else:
-            usuario = controlador_usuario.consultar(request.json["_id"])
-            if usuario is None:
+            rol = controlador_rol_usuario.consultar(request.json["_id"])
+            if rol is None:
                 return jsonify({
                     "estado" : "ADVERTENCIA",
-                    "mensaje": "No se encontro un usuario con el id especificado"
+                    "mensaje": "No se encontro un rol con el id especificado"
                 })
-            usuario_dictionary = usuario.__dict__
-            del usuario_dictionary['_sa_instance_state']
+            rol_dictionary = rol.__dict__
+            del rol_dictionary['_sa_instance_state']
 
-            return jsonify(usuario_dictionary)
+            return jsonify(rol_dictionary)
 
             
     except Exception as e:
@@ -184,3 +171,4 @@ def consultar():
             "mensaje" : mensaje,
             "excepcion": str(e)
         })
+

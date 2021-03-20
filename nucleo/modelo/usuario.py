@@ -11,7 +11,7 @@ class Usuario(db.Model):
     apellido_2 = db.Column(db.String(45), nullable=False)
     rfc = db.Column(db.String(13), nullable=False)
     nombre_acceso = db.Column(db.String(45), nullable=False)
-    contrasena = db.Column(db.String(64), nullable=False)
+    contrasena = db.Column(db.String(100), nullable=False)
     estatus = db.Column(db.String(64), nullable=False,default='Activo')
     rol_usuario = db.Column(db.Integer, nullable = False)
     

@@ -1,14 +1,18 @@
 from nucleo.modelo.usuario import Usuario
 from app_main.conexion import db
+from werkzeug.security import generate_password_hash
 
 def agregar(nombre,apellido_1,apellido_2,rfc,nombre_acceso,contrasena,rol_usuario):
+    hashed_password = generate_password_hash(contrasena, method='sha256')
+    print(hashed_password)
+
     usuario = Usuario(
         nombre = nombre,
         apellido_1 = apellido_1,
         apellido_2 = apellido_2,
         rfc = rfc,
         nombre_acceso = nombre_acceso,
-        contrasena = contrasena,
+        contrasena = hashed_password,
         rol_usuario = rol_usuario
     )
 
@@ -24,7 +28,8 @@ def modificar(_id,nombre,apellido_1,apellido_2,rfc,nombre_acceso,contrasena,rol_
     usuarioModificar.apellido_2 = apellido_2
     usuarioModificar.rfc = rfc
     usuarioModificar.nombre_acceso = nombre_acceso
-    usuarioModificar.contrasena = contrasena
+    hashed_password = generate_password_hash(contrasena, method='sha256')
+    usuarioModificar.contrasena = hashed_password
     usuarioModificar.rol_usuario = rol_usuario
     
     db.session.add(usuarioModificar)
@@ -54,7 +59,7 @@ def reactivar(_id):
     return True
 
 def consultar(_id):
-    if _id != 0:
+    if _id == 0:
         return Usuario.query.all()
     else:
         return db.session.query(Usuario).filter(Usuario._id == _id).first()
