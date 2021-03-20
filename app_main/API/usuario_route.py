@@ -9,7 +9,7 @@ def agregar():
 
 
 @usuario_route.route('/consultar', methods=['POST','GET'])
-def agregar():
+def consultar():
     estado = "OK"
     mensaje = "Información consultada correctamente"
 
@@ -32,7 +32,4 @@ def agregar():
             "estado"  : estado,
             "mensaje" : mensaje 
         })
-
-
-
     return "test"

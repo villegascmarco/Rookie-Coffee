@@ -1,4 +1,4 @@
-from . import db
+from app_main.conexion import db
 from flask_sqlalchemy import SQLAlchemy
 
 class Rol_usuario(db.Model):

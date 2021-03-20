@@ -1,6 +1,6 @@
-from app_main import db
+from app_main.conexion import db
 from flask_sqlalchemy import SQLAlchemy
-from rol_usuario import Rol_usuario
+from .rol_usuario import Rol_usuario
 
 class Usuario(db.Model):
 
@@ -13,5 +13,5 @@ class Usuario(db.Model):
     nombre_acceso = db.Column(db.String(45), nullable=False)
     contrasena = db.Column(db.String(64), nullable=False)
     estatus = db.Column(db.String(64), nullable=False,default='Activo')
-    rol_usuario = db.relationship('Rol_usuario')
+    rol_usuario = db.Column(db.Integer, nullable = False)
     
