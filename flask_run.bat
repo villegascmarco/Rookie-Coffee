@@ -1,6 +1,6 @@
 @ECHO OFF
 
-call %~d0%~p0app\development\Scripts\activate
+call %~d0%~p0app_main\development\Scripts\activate
 
 cd %~d0%~p0
 
