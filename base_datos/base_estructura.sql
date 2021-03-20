@@ -1,3 +1,6 @@
+DROP database IF EXISTS rookie_coffee_db;
+create database rookie_coffee_db;
+use rookie_coffee_db;
 -- MySQL dump 10.13  Distrib 8.0.23, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: rookie_coffee_db
