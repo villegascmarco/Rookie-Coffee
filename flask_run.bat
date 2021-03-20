@@ -6,7 +6,7 @@ cd %~d0%~p0
 
 set FLASK_DEBUG=1
 
-set FLASK_APP=app/
+set FLASK_APP=app_main/
 
 set FLASK_ENV=development
 
