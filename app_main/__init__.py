@@ -1,6 +1,4 @@
-#Archivo de configuración que tiene la función de crear nuestra aplicación, iniciar la base de datos 
-# y registrará nuestros modelos
-#Importamos el módulo os
+
 import os
 #Importamos la clase Flask del módulo flask
 from flask import Flask

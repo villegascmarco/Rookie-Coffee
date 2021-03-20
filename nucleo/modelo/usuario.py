@@ -1,6 +1,6 @@
-from . import db
+from app_main import db
 from flask_sqlalchemy import SQLAlchemy
-from rol_usuario import Usuario_rol
+from rol_usuario import Rol_usuario
 
 class Usuario(db.Model):
 
