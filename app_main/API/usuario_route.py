@@ -1,35 +1,180 @@
+import json
 from flask import Blueprint
 from flask import jsonify
-from nucleo.modelo.usuario import Usuario
+from flask import request
+from nucleo.controlador import controlador_usuario
+from app_main.conexion import db
 usuario_route = Blueprint("usuario_route", __name__,url_prefix='/usuario')
 
-@usuario_route.route('/agregar', methods=['POST','GET'])
+
+
+@usuario_route.route('/agregar', methods=['POST'])
 def agregar():
-    return "test"
+    try:
+        if controlador_usuario.agregar(
+            request.json["nombre"],
+            request.json["apellido_1"],
+            request.json["apellido_2"],
+            request.json["rfc"],
+            request.json["nombre_acceso"],
+            request.json["contrasena"],
+            request.json["rol_usuario"]):
+
+            return jsonify({
+                "estado" : "OK",
+                "mensaje": "Usuario registrado correctamente"
+            })
+        else:
+            estado = "ERROR"
+            mensaje = "Ha ocurrido un error al agregar el registro! Por favor verificalo con un administrador o revisa tu solicitud"    
+            return jsonify({
+                "estado"  : estado,
+                "mensaje" : mensaje
+            })
+
+    except Exception as e:
+        estado = "ERROR"
+        mensaje = "Ha ocurrido un error al agregar el registro! Por favor verificalo con un administrador o revisa tu solicitud"
+        
+        return jsonify({
+            "estado"  : estado,
+            "mensaje" : mensaje,
+            "excepcion":str(e)
+        })
 
 
-@usuario_route.route('/consultar', methods=['POST','GET'])
+@usuario_route.route('/modificar',methods=['POST'])
+def modificar():
+    try:    
+        if "_id" not in request.json:
+            return jsonify({
+                "estado" : "ADVERTENCIA",
+                "mensaje": "Ha ocurrido un error, es necesario proporcionar un id de usuario para modificar"
+            })
+        if controlador_usuario.modificar(
+            request.json["_id"],
+            request.json["nombre"],
+            request.json["apellido_1"],
+            request.json["apellido_2"],
+            request.json["rfc"],
+            request.json["nombre_acceso"],
+            request.json["contrasena"],
+            request.json["rol_usuario"]
+        ):
+            return jsonify({
+                "estado" : "OK",
+                "mensaje": "Usuario modificado correctamente"
+            })
+        else:
+            estado = "ERROR"
+            mensaje = "Ha ocurrido un error al modificar el registro! Por favor verificalo con un administrador o revisa tu solicitud"
+            return jsonify({
+                "estado"  : estado,
+                "mensaje" : mensaje
+            })
+
+
+    except Exception as e:
+        estado = "ERROR"
+        mensaje = "Ha ocurrido un error al modificar el registro! Por favor verificalo con un administrador o revisa tu solicitud"
+        
+        return jsonify({
+            "estado"  : estado,
+            "mensaje" : mensaje,
+            "excepcion":str(e)
+        })
+
+@usuario_route.route('/desactivar', methods=["POST"])
+def desactivar():
+    try:    
+        if "_id" not in request.json:
+            return jsonify({
+                "estado" : "ADVERTENCIA",
+                "mensaje": "Ha ocurrido un error, es necesario proporcionar un id de usuario para desactivar"
+            })
+        if controlador_usuario.desactivar(request.json["_id"]):
+            return jsonify({
+                "estado" : "OK",
+                "mensaje": "Usuario desactivado correctamente"
+            })
+        else:
+            estado = "ERROR"
+            mensaje = "Ha ocurrido un error al desactivar el registro! Por favor verificalo con un administrador o revisa tu solicitud"
+            return jsonify({
+                "estado"  : estado,
+                "mensaje" : mensaje
+            })
+    except Exception as e:
+        estado = "ERROR"
+        mensaje = "Ha ocurrido un error al modificar el registro! Por favor verificalo con un administrador o revisa tu solicitud"
+        
+        return jsonify({
+            "estado"  : estado,
+            "mensaje" : mensaje,
+            "excepcion":str(e)
+        })
+
+@usuario_route.route('/reactivar', methods=["POST"])
+def reactivar():
+    try:    
+        if "_id" not in request.json:
+            return jsonify({
+                "estado" : "ADVERTENCIA",
+                "mensaje": "Ha ocurrido un error, es necesario proporcionar un id de usuario para desactivar"
+            })
+        if controlador_usuario.reactivar(request.json["_id"]):
+            return jsonify({
+                "estado" : "OK",
+                "mensaje": "Usuario reactivado correctamente"
+            })
+        else:
+            estado = "ERROR"
+            mensaje = "Ha ocurrido un error al reactivar el registro! Por favor verificalo con un administrador o revisa tu solicitud"
+            return jsonify({
+                "estado"  : estado,
+                "mensaje" : mensaje
+            })
+    except Exception as e:
+        estado = "ERROR"
+        mensaje = "Ha ocurrido un error al reactivar el registro! Por favor verificalo con un administrador o revisa tu solicitud"
+        
+        return jsonify({
+            "estado"  : estado,
+            "mensaje" : mensaje,
+            "excepcion":str(e)
+        })
+
+@usuario_route.route('/consultar', methods=['POST'])
 def consultar():
     estado = "OK"
     mensaje = "Información consultada correctamente"
 
     try:
-        usuarios  = Usuario.query.all()
-        if len(usuarios)>0:
-            for usuario in usuarios:
-                print("jello")
+        print(request.json)
+        print("_id" not in request.json)
+
+        if "_id" not in request.json:
+            return json.dumps(controlador_usuario.consultar(0))
         else:
-            estado = "ADVERTENCIA"
-            mensaje = "No hay registros para mostrar"
+            usuario = controlador_usuario.consultar(request.json["_id"])[0]
+
             return jsonify({
-                "estado" : estado,
-                "mensaje": mensaje
+                "_id": usuario._id,
+                "nombre": usuario.nombre,
+                "apellido_1": usuario.apellido_1,
+                "apellido_2": usuario.apellido_2,
+                "rfc": usuario.rfc,
+                "nombre_acceso": usuario.nombre_acceso,
+                "contrasena": usuario.contrasena,
+                "estatus": usuario.estatus,
+                "rol_usuario": usuario.rol_usuario,
             })
-    except:
+            
+    except Exception as e:
         estado = "ERROR"
         mensaje = "Ha ocurrido un error! Por favor verificalo con un administrador"
         return jsonify({
             "estado"  : estado,
-            "mensaje" : mensaje 
+            "mensaje" : mensaje,
+            "excepcion": str(e)
         })
-    return "test"
