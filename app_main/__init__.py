@@ -13,12 +13,6 @@ def create_app():
     app = Flask(__name__)
 
     app.register_blueprint(usuario_route)
-    
-    # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    # #Generamos la clave aleatoria de sesión Flask para crear una cookie con la inf. de la sesión
-    # app.config['SECRET_KEY'] = os.urandom(24)
-    # #Definimos la ruta a la BD: mysql://user:password@localhost/bd'
-    # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:root@localhost/rookie_coffee_db'
 
     app.config.from_json(DB_CONFIGURACION)
 
