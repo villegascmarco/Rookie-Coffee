@@ -1,12 +1,15 @@
 from flask import Blueprint
-from flask import jsonify, request
+from flask import jsonify, request,jsonify
 from nucleo.controlador import controlador_rol_usuario
+from nucleo.controlador import controlador_inicio_sesion as sesion
+
 
 rol_usuario_route = Blueprint("rol_usuario_route", __name__,url_prefix='/rol-usuario')
 
 
 @rol_usuario_route.route('/agregar', methods=['POST'])
-def agregar():
+@sesion.token_required
+def agregar(usuario_actual):
     try:
         if controlador_rol_usuario.agregar(
                 request.json["nombre"],

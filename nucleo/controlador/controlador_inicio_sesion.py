@@ -1,3 +1,10 @@
+from functools import wraps
+from flask import current_app,request,jsonify
+from nucleo.modelo.usuario import Usuario
+from app_main.conexion import db
+import datetime
+import jwt 
+
 def token_required(f):
    @wraps(f)
    def decorator(*args, **kwargs):
@@ -8,13 +15,26 @@ def token_required(f):
          token = request.headers['x-access-tokens']
 
       if not token:
-         return jsonify({'message': 'a valid token is missing'})
+         return jsonify({
+                  'estado' : 'ERROR',
+                  'mensaje': 'Se requiere un token para continuar'
+               })
 
       try:
-         data = jwt.decode(token, app.config[SECRET_KEY])
-         current_user = Usuario.query.filter_by(Usuario._id == data['public_id']).first()
-      except:
-         return jsonify({'message': 'token is invalid'})
+         data = jwt.decode(token, current_app.config['SECRET_KEY'])
+         expiracion = datetime.datetime.strptime(data["expiracion"], '%Y-%m-%d %H:%M:%S.%f')
+         ahora = datetime.datetime.utcnow()
 
-      return f(current_user, *args, **kwargs)
+         if ahora > expiracion:
+            return jsonify({
+                  'estado' : 'SESION CADUCADA',
+                  'mensaje': 'El token enviado ha caducado'})   
+
+         usuario_actual = db.session.query(Usuario).filter(Usuario._id == data['public_id']).first()
+      except:
+         return jsonify({
+                  'estado' : 'ERROR',
+                  'mensaje': 'El token enviado es invalido'})
+
+      return f(usuario_actual, *args, **kwargs)
    return decorator

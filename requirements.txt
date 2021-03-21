@@ -2,4 +2,4 @@ Flask
 datetime 
 uuid
 Flask-SQLAlchemy
-PyJWT
+PyJWT==1.7.1
