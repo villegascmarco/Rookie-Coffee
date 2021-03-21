@@ -1,0 +1,141 @@
+
+GET http://127.0.0.1:5000/usuario/consultar HTTP/1.1
+
+###
+
+POST http://127.0.0.1:5000/usuario/agregar HTTP/1.1
+Content-Type: application/json
+
+{
+    "nombre": "Marco",
+    "apellido_1": "Villegas",
+    "apellido_2": "Cervantes",
+    "rfc": "VICI990407DW0",
+    "nombre_acceso":"marcoSexMachine69",
+    "contrasena":"admin",
+    "estatus":"Activo",
+    "rol_usuario":1
+}
+
+###
+
+POST http://127.0.0.1:5000/usuario/agregar HTTP/1.1
+Content-Type: application/json
+
+{
+    "nombre": "Pablito",
+    "apellido_1": "Hernandez",
+    "apellido_2": "Castillo",
+    "rfc": "HECPXXXXXXU13",
+    "nombre_acceso":"pabloUser69",
+    "contrasena":"user",
+    "estatus":"Activo",
+    "rol_usuario":2
+}
+
+###
+
+POST http://127.0.0.1:5000/usuario/modificar HTTP/1.1
+Content-Type: application/json
+
+{
+    "_id": 2,
+    "apellido_1": "Candelario",
+    "apellido_2": "Hermosillo",
+    "contrasena": "123",
+    "estatus": "Activo",
+    "nombre": "Cande",
+    "nombre_acceso": "CandeCandelario",
+    "rfc": "CAHCXXXXXXGD1",
+    "rol_usuario": 2
+  }
+
+###
+
+POST http://127.0.0.1:5000/usuario/desactivar HTTP/1.1
+Content-Type: application/json
+
+{
+    "_id":2
+}
+###
+
+POST http://127.0.0.1:5000/usuario/reactivar HTTP/1.1
+Content-Type: application/json
+
+{
+    "_id":2
+}
+###
+
+POST http://127.0.0.1:5000/usuario/consultar HTTP/1.1
+Content-Type: application/json
+
+{
+
+}
+
+###
+rol
+###
+
+POST http://127.0.0.1:5000/rol-usuario/agregar HTTP/1.1
+Content-Type: application/json
+x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjIsImV4cGlyYWNpb24iOiIyMDIxLTAzLTIxIDAyOjA2OjQ4LjUwMDA5MCJ9.nHZ9gAaBMwV_tRVPWhgF4oshXMVwtbtuZITi4Xzc_sY
+
+{
+    "nombre": "Administrador productos",
+    "descripcion": "Administrador que solo puede modificar productos"
+}
+
+###
+
+POST http://127.0.0.1:5000/rol-usuario/modificar HTTP/1.1
+Content-Type: application/json
+x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjIsImV4cGlyYWNpb24iOiIyMDIxLTAzLTIxIDAxOjI0OjQyLjI3ODQ3NSJ9.ogup_Hqm7YQ5wBojnKkD93z2S2wnqR49Gid8DYM3WAU
+
+{
+    "_id": 3,
+    "nombre": "Administrador productos",
+    "descripcion": "Administrador que solo puede modificar solamente productos, y nada más"
+}
+
+###
+
+POST http://127.0.0.1:5000/rol-usuario/desactivar HTTP/1.1
+Content-Type: application/json
+
+{
+    "_id": 3
+}
+
+###
+
+POST http://127.0.0.1:5000/rol-usuario/reactivar HTTP/1.1
+Content-Type: application/json
+
+{
+    "_id": 3
+}
+###
+
+POST http://127.0.0.1:5000/rol-usuario/consultar HTTP/1.1
+Content-Type: application/json
+
+{
+    "_id":1
+}
+
+
+###
+LOGIN
+###
+POST http://127.0.0.1:5000/security/login HTTP/1.1
+Authorization: Basic CandeCandelario:123
+
+
+###
+
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjIsImV4cGlyYWNpb24iOiIyMDIxLTAzLTIxIDAxOjI0OjQyLjI3ODQ3NSJ9.ogup_Hqm7YQ5wBojnKkD93z2S2wnqR49Gid8DYM3WAU
+
+###
