@@ -13,7 +13,7 @@ def agregar(nombre, descripcion, precio, usuario, fecha_registro):
         usuario = usuario,
         fecha_registro = ahora.strftime("%d/%m/%Y  %H:%M:%S")
     )
-    db.session.add(usuario)
+    db.session.add(producto)
     db.session.commit()
     return True
 
