@@ -81,18 +81,18 @@ rol
 
 POST http://127.0.0.1:5000/rol-usuario/agregar HTTP/1.1
 Content-Type: application/json
-x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjIsImV4cGlyYWNpb24iOiIyMDIxLTAzLTIxIDAyOjA2OjQ4LjUwMDA5MCJ9.nHZ9gAaBMwV_tRVPWhgF4oshXMVwtbtuZITi4Xzc_sY
+x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjIsImV4cGlyYWNpb24iOiIyMDIxLTAzLTIyIDIzOjA2OjA4LjcyOTM4OCJ9.DEryEpJA_ijM0LxQC-v-fvgjLQk7S1S-yxL5MflHJeg
 
 {
-    "nombre": "Administrador productos",
-    "descripcion": "Administrador que solo puede modificar productos"
+    "nombre": "Administrador test",
+    "descripcion": "Administrador de prueba"
 }
 
 ###
 
 POST http://127.0.0.1:5000/rol-usuario/modificar HTTP/1.1
 Content-Type: application/json
-x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjIsImV4cGlyYWNpb24iOiIyMDIxLTAzLTIxIDAxOjI0OjQyLjI3ODQ3NSJ9.ogup_Hqm7YQ5wBojnKkD93z2S2wnqR49Gid8DYM3WAU
+x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjIsImV4cGlyYWNpb24iOiIyMDIxLTAzLTIzIDAwOjA3OjIzLjAxNDg5MCJ9.wT0vb0io3DZAbh4fPFCpSxPJXTz3vgqljxZizOeEm_M
 
 {
     "_id": 3,
@@ -128,10 +128,13 @@ Content-Type: application/json
 
 
 ###
+
+
 LOGIN
 ###
 POST http://127.0.0.1:5000/security/login HTTP/1.1
 Authorization: Basic CandeCandelario:123
+
 
 
 ###
