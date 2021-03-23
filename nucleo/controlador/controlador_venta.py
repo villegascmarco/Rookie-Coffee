@@ -58,7 +58,7 @@ def buscar_id(_id):
     return diccionario
 
 
-def crear(request):
+def crear(request, usuario_actual):
     if not request.json:
         raise Exception(
             'JSON no encontrado. El JSON es necesario para procesar la petición.')
@@ -67,7 +67,7 @@ def crear(request):
 
     fecha = datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
     total_venta = obtener_validar(requestJSON, 'total_venta')
-    usuario = obtener_validar(requestJSON, 'usuario')
+    usuario = usuario_actual._id
     detalles = obtener_validar(requestJSON, 'detalles')
 
     nueva_venta = Venta(

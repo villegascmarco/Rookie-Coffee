@@ -5,14 +5,14 @@ from nucleo.controlador import controlador_inicio_sesion as sesion
 venta_route = Blueprint("venta_route", __name__, url_prefix='/venta')
 
 
-@venta_route.route('/agregar', methods=['POST', 'GET'])
+@venta_route.route('/test', methods=['POST', 'GET'])
 def agregar():
     return "test"
 
 
 @venta_route.route('/consultar', methods=['POST'])
-# @sesion.token_required
-def consultar():
+@sesion.token_required
+def consultar(usuario_actual):
     estado = ''
     mensaje = ''
     contenido = ''
@@ -35,13 +35,13 @@ def consultar():
 
 
 @venta_route.route('/registrar', methods=['POST'])
-# @sesion.token_required
-def registrar():
+@sesion.token_required
+def registrar(usuario_actual):
     estado = ''
     mensaje = ''
     contenido = ''
     try:
-        venta = controlador.crear(request)
+        venta = controlador.crear(request, usuario_actual)
 
         estado = "OK"
         mensaje = "Venta registrada"
@@ -56,8 +56,8 @@ def registrar():
 
 
 @venta_route.route('/modificar', methods=['POST'])
-# @sesion.token_required
-def modificar():
+@sesion.token_required
+def modificar(usuario_actual):
     estado = ''
     mensaje = ''
     contenido = ''
@@ -77,8 +77,8 @@ def modificar():
 
 
 @venta_route.route('/eliminar', methods=['POST'])
-# @sesion.token_required
-def eliminar():
+@sesion.token_required
+def eliminar(usuario_actual):
     estado = ''
     mensaje = ''
     try:
