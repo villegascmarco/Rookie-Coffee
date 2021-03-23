@@ -3,13 +3,13 @@ from flask import Blueprint
 from flask import jsonify
 from flask import request
 from nucleo.controlador import controlador_usuario
+from nucleo.controlador import controlador_inicio_sesion as sesion
 from app_main.conexion import db
 usuario_route = Blueprint("usuario_route", __name__,url_prefix='/usuario')
 
-
-
 @usuario_route.route('/agregar', methods=['POST'])
-def agregar():
+@sesion.token_required
+def agregar(usuario_actual):
     try:
         if controlador_usuario.agregar(
             request.json["nombre"],
@@ -44,7 +44,8 @@ def agregar():
 
 
 @usuario_route.route('/modificar',methods=['POST'])
-def modificar():
+@sesion.token_required
+def modificar(usuario_actual):
     try:    
         if "_id" not in request.json:
             return jsonify({
@@ -85,7 +86,8 @@ def modificar():
         })
 
 @usuario_route.route('/desactivar', methods=["POST"])
-def desactivar():
+@sesion.token_required
+def desactivar(usuario_actual):
     try:    
         if "_id" not in request.json:
             return jsonify({
@@ -115,7 +117,8 @@ def desactivar():
         })
 
 @usuario_route.route('/reactivar', methods=["POST"])
-def reactivar():
+@sesion.token_required
+def reactivar(usuario_actual):
     try:    
         if "_id" not in request.json:
             return jsonify({
@@ -145,7 +148,8 @@ def reactivar():
         })
 
 @usuario_route.route('/consultar', methods=['POST'])
-def consultar():
+@sesion.token_required
+def consultar(usuario_actual):
     estado = "OK"
     mensaje = "Información consultada correctamente"
 

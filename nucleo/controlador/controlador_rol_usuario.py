@@ -1,13 +1,6 @@
 from nucleo.modelo.rol_usuario import Rol_usuario
 from app_main.conexion import db
 
-# __tablename__="rol_usuario"
-#     _id = db.Column(db.Integer, primary_key = True)
-#     nombre = db.Column(db.String(45), nullable=False)
-#     descripcion = db.Column(db.String(100), nullable=False)
-#     estatus = db.Column(db.String(64), nullable=False,default='Activo')
-
-
 def agregar(nombre,descripcion):
     rol_usuario = Rol_usuario(
         nombre = nombre,

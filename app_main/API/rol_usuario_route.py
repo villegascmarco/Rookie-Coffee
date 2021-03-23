@@ -39,7 +39,8 @@ def agregar(usuario_actual):
 
 
 @rol_usuario_route.route('/modificar', methods=['POST'])
-def modificar():
+@sesion.token_required
+def modificar(usuario_actual):
     try:
         if "_id" not in request.json:
             return jsonify({
@@ -74,7 +75,8 @@ def modificar():
         })
 
 @rol_usuario_route.route('/desactivar', methods = ["POST"])
-def desactivar():
+@sesion.token_required
+def desactivar(usuario_actual):
     try:    
         if "_id" not in request.json:
             return jsonify({
@@ -104,7 +106,8 @@ def desactivar():
         })
 
 @rol_usuario_route.route('/reactivar', methods = ["POST"])
-def reactivar():
+@sesion.token_required
+def reactivar(usuario_actual):
     try:    
         if "_id" not in request.json:
             return jsonify({
@@ -133,9 +136,9 @@ def reactivar():
             "excepcion":str(e)
         })
 
-
 @rol_usuario_route.route('/consultar', methods=['POST'])
-def consultar():
+@sesion.token_required
+def consultar(usuario_actual):
     estado = "OK"
     mensaje = "Información consultada correctamente"
 
