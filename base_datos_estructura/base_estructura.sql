@@ -1,3 +1,6 @@
+DROP database IF EXISTS rookie_coffee_db;
+create database rookie_coffee_db;
+use rookie_coffee_db;
 -- MySQL dump 10.13  Distrib 8.0.23, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: rookie_coffee_db
@@ -68,7 +71,7 @@ DROP TABLE IF EXISTS `ingrediente_producto`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ingrediente_producto` (
-  `_id` int NOT NULL,
+  `_id` int NOT NULL AUTO_INCREMENT,
   `cantidad_requerida` double NOT NULL,
   `producto` int NOT NULL,
   `ingrediente` int NOT NULL,

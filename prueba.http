@@ -133,7 +133,7 @@ Content-Type: application/json
 LOGIN
 ###
 POST http://127.0.0.1:5000/security/login HTTP/1.1
-Authorization: Basic CandeCandelario:123
+Authorization: Basic marcoSexMachine69:admin
 
 
 
