@@ -6,7 +6,7 @@ from app.conexion import db
 producto_route = Blueprint('producto_route', __name__, url_prefix='/producto')
 
 
-
+#Agrega un producto nuevo a la base de datos
 @producto_route.route('/agregar', methods=['POST'])
 def agregarProducto():
     try:
@@ -16,10 +16,9 @@ def agregarProducto():
             request.json["precio"],
             request.json["usuario"],  
             request.json["fecha_registro"]):
-            
             return jsonify({
                 "estado" : "OK",
-                "mensaje": "Usuario registrado correctamente"
+                "mensaje": "Producto registrado correctamente"
             })
         else:
             estado = "ERROR"
@@ -37,7 +36,8 @@ def agregarProducto():
             "excepcion":str(e)
         })
         
-
+# modidica los productos que estan almacenados en la base de datos 
+# con la ID del producto
 @producto_route.route('/modificar', methods=['POST'])
 def modificarProducto():
     try: 
@@ -46,16 +46,16 @@ def modificarProducto():
                 "estado" : "ADVERTENCIA",
                 "mensaje": "Ha ocurrido un error, es necesario proporcionar un id de usuario para modificar"
             })
-        if Controlador_Producto.agregar(
+        if Controlador_Producto.modificar(
+            request.json["_id"],
             request.json["nombre"],
             request.json["descripcion"],
             request.json["precio"],
-            request.json["usuario"],  
-            request.json["fecha_registro"]):
-            
+            request.json["usuario"],
+            request.json["fecha_registro"]):       
             return jsonify({
                 "estado" : "OK",
-                "mensaje": "Usuario modificado correctamente"
+                "mensaje": "Producto modificado correctamente"
             })
         else:
             estado = "ERROR"
@@ -74,7 +74,7 @@ def modificarProducto():
             "excepcion":str(e)
         })
 
-
+#cambia del estatus de activo a incativo del producto
 @producto_route.route('/desactivar', methods=['POST'])
 def desactivarProducto():  
     try: 
@@ -86,7 +86,7 @@ def desactivarProducto():
         if Controlador_Producto.desactivar(request.json["_id"]):
             return jsonify({
                 "estado" : "OK",
-                "mensaje": "Usuario desactivado correctamente"
+                "mensaje": "Producto desactivado correctamente"
             }) 
         else:
             estado = "ERROR"
@@ -105,7 +105,7 @@ def desactivarProducto():
             "excepcion":str(e)
         })
         
-
+# vuelave a cambiar el estatus del producto a activo
 @producto_route.route('/reactivar', methods=['POST'])
 def reactivarProducto():  
     try: 
@@ -117,7 +117,7 @@ def reactivarProducto():
         if Controlador_Producto.reactivar(request.json["_id"]):
             return jsonify({
                 "estado" : "OK",
-                "mensaje": "Usuario desactivado correctamente"
+                "mensaje": "Producto Ractivado correctamente"
             }) 
         else:
             estado = "ERROR"
@@ -135,11 +135,23 @@ def reactivarProducto():
             "mensaje" : mensaje,
             "excepcion":str(e)
         })
- 
-
-
-@producto_route.route("/consultar", methods=['POST','GET'])
+        
+        
+ # Consulta todos los productos que estan almacenados en la base de datos
+@producto_route.route("/consultar", methods=['GET'])
 def consultarProductos():
+    productos = Controlador_Producto.consultarallproducto()
+    producto_json = []
+    for producto in productos:
+        producto_dictionary = producto.__dict__
+        del producto_dictionary['_sa_instance_state']
+        producto_json.append(producto_dictionary)
+    return jsonify(producto_json)
+    
+
+### Buscar por la id el registro del producto 
+@producto_route.route("/buscar", methods=['POST'])
+def buscarProductos():
     estado = "OK"
     mensaje = "Información consultada correctamente"
     
@@ -162,7 +174,7 @@ def consultarProductos():
             if producto is None:
                     return jsonify({
                         "estado" : "ADVERTENCIA",
-                        "mensaje": "No se encontro un usuario con el id especificado"
+                        "mensaje": "No se encontro un Producto con el id especificado"
                     })
             producto_dictionary = producto.__dict__
             del producto_dictionary['_sa_instance_state']

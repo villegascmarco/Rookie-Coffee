@@ -23,7 +23,8 @@ def modificar(_id, nombre, descripcion, precio, usuario, fecha_registro):
     productoModificar.descripcion = descripcion
     productoModificar.precio = precio
     productoModificar.usuario = usuario
-    productoModificar.fecha_registro = fecha_registro = ahora.strftime("%d/%m/%Y  %H:%M:%S")
+    fecha_registro = ahora.strftime("%d/%m/%Y  %H:%M:%S")
+    productoModificar.fecha_registro = fecha_registro
     db.session.add(productoModificar)
     db.session.commit()
     return True
@@ -47,3 +48,6 @@ def consultar(_id):
         return Producto.query.all()
     else:
         return db.session.query(Producto).filter(Producto._id == _id).first()
+    
+def consultarallproducto():
+    return Producto.query.all()

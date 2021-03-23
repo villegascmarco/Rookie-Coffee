@@ -3,23 +3,22 @@ from flask import Blueprint, jsonify, request
 from nucleo.controlador import Controlador_Ingrediente
 from app.conexion import db
 
-ingrediente_route = Blueprint('ingrediente_route', __name__, url_prefix='/ingrediente')
+ingredienteProducto_route = Blueprint('ingredienteProducto_route', __name__, url_prefix='/ingredienteProducto')
 
-
-#Agrega un Ingrediente nuevo a la base de datos
-@ingrediente_route.route('/agregar', methods=['POST'])
-def agregarIngrediente():
+#Agrega un Ingrediente producto nuevo a la base de datos
+@ingredienteProducto_route.route('/agregar', methods=['POST'])
+def agregarIngredienteProducto():
     try:
-        if Controlador_Ingrediente.agregar(
+        if Controlador_Ingrediente.agregarIgrePro(
             request.json["nombre"],
-            request.json["descripcion"],
-            request.json["cantidad_disponible"],
-            request.json["unidad_medida"],
+            request.json["cantidad_requerida"],
+            request.json["producto"],
+            request.json["ingrediente"],
             request.json["usuario"],  
             request.json["fecha_registro"]):
             return jsonify({
                 "estado" : "OK",
-                "mensaje": "Ingrediente registrado correctamente"
+                "mensaje": "IngredienteProducto registrado correctamente"
             })
         else:
             estado = "ERROR"
@@ -37,27 +36,27 @@ def agregarIngrediente():
             "excepcion":str(e)
         })
 
-# modidica los Ingredientes  que estan almacenados en la base de datos 
-# con la ID del Ingrediente
-@ingrediente_route.route('/modificar', methods=['POST'])
-def modificarIngredinete():
+# modidica los Ingredientes Producto  que estan almacenados en la base de datos 
+# con la ID del Ingredientes Producto
+@ingredienteProducto_route.route('/modificar', methods=['POST'])
+def modificarIngredienteProducto():
     try: 
         if "_id" not in request.json:
             return jsonify({
                 "estado" : "ADVERTENCIA",
                 "mensaje": "Ha ocurrido un error, es necesario proporcionar un id de usuario para modificar"
             })
-        if Controlador_Ingrediente.modificar(
+        if Controlador_Ingrediente.modificarIgrePro(
             request.json["_id"],
             request.json["nombre"],
-            request.json["descripcion"],
-            request.json["cantidad_disponible"],
-            request.json["unidad_medida"],
+            request.json["cantidad_requerida"],
+            request.json["producto"],
+            request.json["ingrediente"],
             request.json["usuario"],  
             request.json["fecha_registro"]):       
             return jsonify({
                 "estado" : "OK",
-                "mensaje": "Ingrediente modificado correctamente"
+                "mensaje": "Ingrediente Producto modificado correctamente"
             })
         else:
             estado = "ERROR"
@@ -76,19 +75,19 @@ def modificarIngredinete():
             "excepcion":str(e)
         })
         
-#cambia del estatus de activo a incativo del Ingrediente
-@ingrediente_route.route('/desactivar', methods=['POST'])
-def desactivarIngrediente():  
+#cambia del estatus de activo a incativo del Ingrediente Producto
+@ingredienteProducto_route.route('/desactivar', methods=['POST'])
+def desactivarIngredienteProducto():  
     try: 
         if "_id" not in request.json:
             return jsonify({
                 "estado" : "ADVERTENCIA",
                 "mensaje": "Ha ocurrido un error, es necesario proporcionar un id de usuario para desactivar"
             }) 
-        if Controlador_Ingrediente.desactivar(request.json["_id"]):
+        if Controlador_Ingrediente.desactivarIgrePro(request.json["_id"]):
             return jsonify({
                 "estado" : "OK",
-                "mensaje": "Ingrediente desactivado correctamente"
+                "mensaje": "Ingrediente producto desactivado correctamente"
             }) 
         else:
             estado = "ERROR"
@@ -107,19 +106,20 @@ def desactivarIngrediente():
             "excepcion":str(e)
         })
         
-# vuelave a cambiar el estatus del Ingrediente a activo
-@ingrediente_route.route('/reactivar', methods=['POST'])
-def reactivarIngrediente():  
+        
+#cambia del estatus de activo a incativo del Ingrediente Producto
+@ingredienteProducto_route.route('/reactivar', methods=['POST'])
+def activarIngredienteProducto():  
     try: 
         if "_id" not in request.json:
             return jsonify({
                 "estado" : "ADVERTENCIA",
                 "mensaje": "Ha ocurrido un error, es necesario proporcionar un id de usuario para desactivar"
             }) 
-        if Controlador_Ingrediente.reactivar(request.json["_id"]):
+        if Controlador_Ingrediente.reactivarIgrePro(request.json["_id"]):
             return jsonify({
                 "estado" : "OK",
-                "mensaje": "Ingrediente Reactivado correctamente"
+                "mensaje": "Ingrediente producto activado correctamente"
             }) 
         else:
             estado = "ERROR"
@@ -137,22 +137,21 @@ def reactivarIngrediente():
             "mensaje" : mensaje,
             "excepcion":str(e)
         })
+        
+# Consulta todos los ingredintes Productos que estan almacenados en la base de datos
+@ingredienteProducto_route.route("/consultar", methods=['GET'])
+def consultarIngredientesProductos():
+    ingredientesP = Controlador_Ingrediente.consultarallIngredientesProductos()
+    ingredientesP_json = []
+    for ingredienteP in ingredientesP:
+        ingredientesP_dictionary = ingredienteP.__dict__
+        del ingredientesP_dictionary['_sa_instance_state']
+        ingredientesP_json.append(ingredientesP_dictionary)
+    return jsonify(ingredientesP_json)
 
-# Consulta todos los ingredintes que estan almacenados en la base de datos
-@ingrediente_route.route("/consultar", methods=['GET'])
-def consultarIngredientes():
-    ingredientes = Controlador_Ingrediente.consultarallIngredientes()
-    ingredientes_json = []
-    for ingrediente in ingredientes:
-        ingredientes_dictionary = ingrediente.__dict__
-        del ingredientes_dictionary['_sa_instance_state']
-        ingredientes_json.append(ingredientes_dictionary)
-    return jsonify(ingredientes_json)
 
-
-
-@ingrediente_route.route("/buscar", methods=['POST'])
-def buscarIngredientes():
+@ingredienteProducto_route.route("/buscar", methods=['POST'])
+def buscarIngredientesProductos():
     estado = "OK"
     mensaje = "Información consultada correctamente"
     
@@ -162,24 +161,24 @@ def buscarIngredientes():
         
         if "_id" not in request.json or request.json["_id"] == 0:
             print("test")
-            ingredientes = Controlador_Ingrediente.consultar(0)
-            if len(ingredientes)>0:
-                ingredintes_json = []
-                for ingrediente in ingredientes:
-                    ingrediente_dictionary = ingrediente.__dict__
-                    del ingrediente_dictionary['_sa_instance_state']
-                    ingredintes_json.append(ingrediente_dictionary)
-                return jsonify(ingredintes_json)
+            ingredientesP = Controlador_Ingrediente.consultarIngrePro(0)
+            if len(ingredientesP)>0:
+                ingredintesP_json = []
+                for ingredienteP in ingredientesP:
+                    ingredienteP_dictionary = ingredienteP.__dict__
+                    del ingredienteP_dictionary['_sa_instance_state']
+                    ingredintesP_json.append(ingredienteP_dictionary)
+                return jsonify(ingredintesP_json)
         else:
-            ingrediente = Controlador_Ingrediente.consultar(request.json["_id"])
-            if ingrediente is None:
+            ingredienteP = Controlador_Ingrediente.consultarIngrePro(request.json["_id"])
+            if ingredienteP is None:
                     return jsonify({
                         "estado" : "ADVERTENCIA",
                         "mensaje": "No se encontro un Ingrediente con el id especificado"
                     })
-            ingrediente_dictionary = ingrediente.__dict__
-            del ingrediente_dictionary['_sa_instance_state']
-            return jsonify(ingrediente_dictionary)
+            ingredienteP_dictionary = ingredienteP.__dict__
+            del ingredienteP_dictionary['_sa_instance_state']
+            return jsonify(ingredienteP_dictionary)
         
     except Exception as e:
         estado = "ERROR"
