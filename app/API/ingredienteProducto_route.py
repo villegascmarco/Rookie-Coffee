@@ -188,3 +188,31 @@ def buscarIngredientesProductos():
             "mensaje" : mensaje,
             "excepcion": str(e)
         })
+        
+        
+@ingredienteProducto_route.route("/prueba", methods=['POST'])
+def prueba():
+    try:
+        if Controlador_Ingrediente.restarCantidadDisponible(
+            request.json["_idProducto"],
+            request.json["CantidadComprada"]):
+            return jsonify({
+                "estado" : "OK",
+                "mensaje": "IngredienteProducto restado correctamente"
+            })
+        else:
+            estado = "ERROR"
+            mensaje = "Ha ocurrido un error al agregar el registro! Por favor verificalo con un administrador o revisa tu solicitud"    
+            return jsonify({
+                "estado"  : estado,
+                "mensaje" : mensaje
+            })
+    except Exception as e:
+        estado = "ERROR"
+        mensaje = "Ha ocurrido un error al agregar el registro! Por favor verificalo con un administrador o revisa tu solicitud"
+        return jsonify({
+            "estado"  : estado,
+            "mensaje" : mensaje,
+            "excepcion":str(e)
+        })
+    

@@ -65,6 +65,8 @@ def consultar(_id):
         return db.session.query(Ingrediente).filter(Ingrediente._id == _id).first()
 
 
+
+
 ########### ACCIONES DE LA TABLA IGREDIENTE-PRODUCTO  ############################
 def agregarIgrePro(nombre,cantidad_requerida ,producto ,ingrediente, usuario, fecha_registro):   
     ingredienteProducto = Ingrediente_producto(
@@ -115,3 +117,33 @@ def consultarIngrePro(_id):
         return Ingrediente_producto.query.all()
     else:
         return db.session.query(Ingrediente_producto).filter(Ingrediente_producto._id == _id).first()
+    
+
+def restarCantidadDisponible(_idProducto, CantidadComprada):
+    
+   ingrediente_producto = db.session.query(Ingrediente_producto).filter(Ingrediente_producto.producto == _idProducto).all()
+   
+   for ingrepro in ingrediente_producto:
+       cantidadreque = ingrepro.cantidad_requerida*CantidadComprada
+       
+       ingrediente_ingrediente = db.session.query(Ingrediente).filter(Ingrediente._id == ingrepro.ingrediente).first()
+
+       
+       if ingrediente_ingrediente.unidad_medida == "kg" or "l":
+           ingrediente_ingrediente.cantidad_disponible -= cantidadreque/1000
+           
+           if ingrediente_ingrediente.cantidad_disponible < 1:
+               
+               if ingrediente_ingrediente.unidad_medida == "kg":
+                   ingrediente_ingrediente.unidad_medida = "g"
+               else:
+                   ingrediente_ingrediente.unidad_medida = "ml"
+                   
+               ingrediente_ingrediente.cantidad_disponible *= 1000
+           else:
+               ingrediente_ingrediente.cantidad_disponible -= cantidadreque
+       #else:
+        #   ingrediente_ingrediente.cantidad_disponible -= cantidadreque
+        
+       db.session.add(ingrediente_ingrediente) 
+   db.session.commit()  
