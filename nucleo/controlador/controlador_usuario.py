@@ -1,11 +1,10 @@
 from nucleo.modelo.usuario import Usuario
+from nucleo.controlador import controlador_log_acciones_usuario as log
 from app_main.conexion import db
 import bcrypt
 from werkzeug.security import generate_password_hash, check_password_hash
 
-def agregar(nombre,apellido_1,apellido_2,rfc,nombre_acceso,contrasena,rol_usuario):
-    
-
+def agregar(nombre,apellido_1,apellido_2,rfc,nombre_acceso,contrasena,rol_usuario,usuario_actual_id):
     usuario = Usuario(
         nombre = nombre,
         apellido_1 = apellido_1,
@@ -17,11 +16,14 @@ def agregar(nombre,apellido_1,apellido_2,rfc,nombre_acceso,contrasena,rol_usuari
     )
 
     db.session.add(usuario)
+    
+    db.session.flush()
 
-    db.session.commit()
+    log.registrar_log(usuario_actual_id,'Agregar',Usuario.__tablename__,usuario._id)
+    
     return True
      
-def modificar(_id,nombre,apellido_1,apellido_2,rfc,nombre_acceso,contrasena,rol_usuario):
+def modificar(_id,nombre,apellido_1,apellido_2,rfc,nombre_acceso,contrasena,rol_usuario,usuario_actual_id):
     usuarioModificar = db.session.query(Usuario).filter(Usuario._id == _id).first()
     usuarioModificar.nombre = nombre
     usuarioModificar.apellido_1 = apellido_1
@@ -33,27 +35,27 @@ def modificar(_id,nombre,apellido_1,apellido_2,rfc,nombre_acceso,contrasena,rol_
     
     db.session.add(usuarioModificar)
     
-    db.session.commit()
+    log.registrar_log(usuario_actual_id,'Modificar',Usuario.__tablename__,_id)
     
     return True
     
-def desactivar(_id):
+def desactivar(_id,usuario_actual_id):
     usuarioDesactivar = db.session.query(Usuario).filter(Usuario._id == _id).first()
     usuarioDesactivar.estatus = 'Inactivo'
 
     db.session.add(usuarioDesactivar)
 
-    db.session.commit()
+    log.registrar_log(usuario_actual_id,'Desactivar',Usuario.__tablename__,_id)
 
     return True
 
-def reactivar(_id):
+def reactivar(_id,usuario_actual_id):
     usuarioReactivar = db.session.query(Usuario).filter(Usuario._id == _id).first()
     usuarioReactivar.estatus = 'Activo'
 
     db.session.add(usuarioReactivar)
 
-    db.session.commit()
+    log.registrar_log(usuario_actual_id,'Reactuvar',Usuario.__tablename__,_id)
 
     return True
 

@@ -1,5 +1,6 @@
 from app_main.conexion import db
 from flask_sqlalchemy import SQLAlchemy
+
 class Inicio_sesion(db.Model):
     __tablename__="inicio_sesion"
     _id = db.Column(db.Integer, primary_key = True)

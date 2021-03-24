@@ -18,7 +18,8 @@ def agregar(usuario_actual):
             request.json["rfc"],
             request.json["nombre_acceso"],
             request.json["contrasena"],
-            request.json["rol_usuario"]):
+            request.json["rol_usuario"],
+            usuario_actual._id):
 
             return jsonify({
                 "estado" : "OK",
@@ -60,7 +61,8 @@ def modificar(usuario_actual):
             request.json["rfc"],
             request.json["nombre_acceso"],
             request.json["contrasena"],
-            request.json["rol_usuario"]
+            request.json["rol_usuario"],
+            usuario_actual._id
         ):
             return jsonify({
                 "estado" : "OK",
@@ -94,7 +96,7 @@ def desactivar(usuario_actual):
                 "estado" : "ADVERTENCIA",
                 "mensaje": "Ha ocurrido un error, es necesario proporcionar un id de usuario para desactivar"
             })
-        if controlador_usuario.desactivar(request.json["_id"]):
+        if controlador_usuario.desactivar(request.json["_id"],usuario_actual._id):
             return jsonify({
                 "estado" : "OK",
                 "mensaje": "Usuario desactivado correctamente"
@@ -125,7 +127,7 @@ def reactivar(usuario_actual):
                 "estado" : "ADVERTENCIA",
                 "mensaje": "Ha ocurrido un error, es necesario proporcionar un id de usuario para desactivar"
             })
-        if controlador_usuario.reactivar(request.json["_id"]):
+        if controlador_usuario.reactivar(request.json["_id"],usuario_actual._id):
             return jsonify({
                 "estado" : "OK",
                 "mensaje": "Usuario reactivado correctamente"

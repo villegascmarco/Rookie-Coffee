@@ -34,12 +34,12 @@ def token_required(f):
                   'mensaje': 'El token enviado ha caducado'})   
 
          usuario_actual = db.session.query(Usuario).filter(Usuario._id == data['public_id']).first()
-         sesion_iniciada = db.session.query(Inicio_sesion).filter(Inicio_sesion.usuario == data['public_id']).first()
-         
+         sesion_iniciada =db.session.query(Inicio_sesion).filter(Inicio_sesion.usuario ==  data['public_id'], Inicio_sesion.estatus == 'Activo').first()
+
          if not(sesion_iniciada.token == token and sesion_iniciada.estatus == 'Activo'):
             return jsonify({
                   'estado' : 'TOKEN INVALIDO',
-                  'mensaje': 'El token enviado ha caducado'})   
+                  'mensaje': 'La sesion se ha cerrado'})   
 
       except Exception as e:
          return jsonify({
