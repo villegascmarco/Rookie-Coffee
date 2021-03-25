@@ -1,6 +1,7 @@
 import json 
 from flask import Blueprint, jsonify, request
-from nucleo.controlador import Controlador_Producto
+from nucleo.controlador import Controlador_Producto, Controlador_Ingrediente
+#from nucleo.controlador import controlador_inicio_sesion as sesion
 from app.conexion import db
 
 producto_route = Blueprint('producto_route', __name__, url_prefix='/producto')
@@ -8,6 +9,7 @@ producto_route = Blueprint('producto_route', __name__, url_prefix='/producto')
 
 #Agrega un producto nuevo a la base de datos
 @producto_route.route('/agregar', methods=['POST'])
+#@sesion.token_required
 def agregarProducto():
     try:
         if Controlador_Producto.agregar(
@@ -15,7 +17,8 @@ def agregarProducto():
             request.json["descripcion"],
             request.json["precio"],
             request.json["usuario"],  
-            request.json["fecha_registro"]):
+            request.json["fecha_registro"],
+            request.json["ingrediente_producto"]):
             return jsonify({
                 "estado" : "OK",
                 "mensaje": "Producto registrado correctamente"

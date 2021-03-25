@@ -10,7 +10,6 @@ ingredienteProducto_route = Blueprint('ingredienteProducto_route', __name__, url
 def agregarIngredienteProducto():
     try:
         if Controlador_Ingrediente.agregarIgrePro(
-            request.json["nombre"],
             request.json["cantidad_requerida"],
             request.json["producto"],
             request.json["ingrediente"],
