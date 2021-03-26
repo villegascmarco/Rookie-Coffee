@@ -55,7 +55,7 @@ def modificarProducto():
             request.json["descripcion"],
             request.json["precio"],
             request.json["usuario"],
-            request.json["fecha_registro"]):       
+            request.json["Ingrediente_producto"]):       
             return jsonify({
                 "estado" : "OK",
                 "mensaje": "Producto modificado correctamente"

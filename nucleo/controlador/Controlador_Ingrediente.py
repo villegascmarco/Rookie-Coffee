@@ -81,17 +81,14 @@ def agregarIgrePro(objeto ,usuario, producto):
     return True
 
 
-def modificarIgrePro(_id, nombre, cantidad_requerida ,producto ,ingrediente, usuario, fecha_registro):
-    ingredienteProductoModificar =  db.session.query().filter(Ingrediente_producto._id == _id).first()
-    ingredienteProductoModificar.nombre = nombre
-    ingredienteProductoModificar.cantidad_requerida = cantidad_requerida
-    ingredienteProductoModificar.producto = producto
-    ingredienteProductoModificar.ingrediente = ingrediente
-    ingredienteProductoModificar.usuario = usuario
-    fecha_registro = ahora.strftime("%d/%m/%Y  %H:%M:%S")
-    ingredienteProductoModificar.fecha_registro = fecha_registro
+def modificarIgrePro(objeto):
+    ingredienteProductoModificar =  db.session.query().filter(Ingrediente_producto.producto == objeto.get("_idproducto")).first()
+    print(ingredienteProductoModificar)
+    ingredienteProductoModificar.cantidad_requerida = objeto.get("cantidad_requerida"),
+    ingredienteProductoModificar.ingrediente = objeto.get("ingrediente"),
+    ingredienteProductoModificar.fecha_registro = ahora.strftime("%d/%m/%Y  %H:%M:%S")
     db.session.add(ingredienteProductoModificar)
-    db.session.commit()
+    
     return True
 
 def desactivarIgrePro(_id):

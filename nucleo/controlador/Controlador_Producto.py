@@ -4,7 +4,8 @@ from app.conexion import db
 from datetime import datetime
 
 ahora = datetime.now()
-
+## este metodo agrega los productos a la base de datos  tanto como en la tabla de ingrediente producto,
+# se agrega la cantidad que va requerir en el ingrediente producto
 def agregar(nombre, descripcion, precio, usuario, fecha_registro, objIngredienteProducto):
     
     producto = Producto(
@@ -23,15 +24,18 @@ def agregar(nombre, descripcion, precio, usuario, fecha_registro, objIngrediente
 
 
 
-def modificar(_id, nombre, descripcion, precio, usuario, fecha_registro):
+def modificar(_id, nombre, descripcion, precio, usuario, objIngredienteProducto):
     productoModificar =  db.session.query(Producto).filter(Producto._id == _id).first()
     productoModificar.nombre = nombre
     productoModificar.descripcion = descripcion
     productoModificar.precio = precio
     productoModificar.usuario = usuario
-    fecha_registro = ahora.strftime("%d/%m/%Y  %H:%M:%S")
-    productoModificar.fecha_registro = fecha_registro
+    productoModificar.fecha_registro = ahora.strftime("%d/%m/%Y  %H:%M:%S")
     db.session.add(productoModificar)
+
+    for x in objIngredienteProducto:
+        Controlador_Ingrediente.modificarIgrePro(x)
+    
     db.session.commit()
     return True
 
