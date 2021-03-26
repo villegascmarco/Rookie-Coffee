@@ -1,12 +1,6 @@
 from nucleo.modelo.rol_usuario import Rol_usuario
+from nucleo.controlador import controlador_log_acciones_usuario as log
 from app_main.conexion import db
-
-# __tablename__="rol_usuario"
-#     _id = db.Column(db.Integer, primary_key = True)
-#     nombre = db.Column(db.String(45), nullable=False)
-#     descripcion = db.Column(db.String(100), nullable=False)
-#     estatus = db.Column(db.String(64), nullable=False,default='Activo')
-
 
 def agregar(nombre,descripcion):
     rol_usuario = Rol_usuario(
@@ -16,7 +10,9 @@ def agregar(nombre,descripcion):
 
     db.session.add(rol_usuario)
 
-    db.session.commit()
+    db.session.flush()
+
+    log.registrar_log(usuario_actual_id,'Agregar',Rol_usuario.__tablename__,rol_usuario._id)
 
     return True
 
@@ -27,7 +23,7 @@ def modificar(_id,nombre,descripcion):
 
     db.session.add(rolModificar)
 
-    db.session.commit()
+    log.registrar_log(usuario_actual_id,'Modificar',Rol_usuario.__tablename__,_id)
 
     return True
 
@@ -37,7 +33,7 @@ def desactivar(_id):
     
     db.session.add(rolDesactivar)
 
-    db.session.commit()
+    log.registrar_log(usuario_actual_id,'Desactivar',Rol_usuario.__tablename__,_id)
 
     return True
 
@@ -48,7 +44,7 @@ def reactivar(_id):
     
     db.session.add(rolReactivar)
 
-    db.session.commit()
+    log.registrar_log(usuario_actual_id,'Reactivar',Rol_usuario.__tablename__,_id)
 
     return True
 

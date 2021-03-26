@@ -3,13 +3,13 @@ from flask import Blueprint
 from flask import jsonify
 from flask import request
 from nucleo.controlador import controlador_usuario
+from nucleo.controlador import controlador_inicio_sesion as sesion
 from app_main.conexion import db
 usuario_route = Blueprint("usuario_route", __name__,url_prefix='/usuario')
 
-
-
 @usuario_route.route('/agregar', methods=['POST'])
-def agregar():
+@sesion.token_required
+def agregar(usuario_actual):
     try:
         if controlador_usuario.agregar(
             request.json["nombre"],
@@ -18,7 +18,8 @@ def agregar():
             request.json["rfc"],
             request.json["nombre_acceso"],
             request.json["contrasena"],
-            request.json["rol_usuario"]):
+            request.json["rol_usuario"],
+            usuario_actual._id):
 
             return jsonify({
                 "estado" : "OK",
@@ -44,7 +45,8 @@ def agregar():
 
 
 @usuario_route.route('/modificar',methods=['POST'])
-def modificar():
+@sesion.token_required
+def modificar(usuario_actual):
     try:    
         if "_id" not in request.json:
             return jsonify({
@@ -59,7 +61,8 @@ def modificar():
             request.json["rfc"],
             request.json["nombre_acceso"],
             request.json["contrasena"],
-            request.json["rol_usuario"]
+            request.json["rol_usuario"],
+            usuario_actual._id
         ):
             return jsonify({
                 "estado" : "OK",
@@ -85,14 +88,15 @@ def modificar():
         })
 
 @usuario_route.route('/desactivar', methods=["POST"])
-def desactivar():
+@sesion.token_required
+def desactivar(usuario_actual):
     try:    
         if "_id" not in request.json:
             return jsonify({
                 "estado" : "ADVERTENCIA",
                 "mensaje": "Ha ocurrido un error, es necesario proporcionar un id de usuario para desactivar"
             })
-        if controlador_usuario.desactivar(request.json["_id"]):
+        if controlador_usuario.desactivar(request.json["_id"],usuario_actual._id):
             return jsonify({
                 "estado" : "OK",
                 "mensaje": "Usuario desactivado correctamente"
@@ -115,14 +119,15 @@ def desactivar():
         })
 
 @usuario_route.route('/reactivar', methods=["POST"])
-def reactivar():
+@sesion.token_required
+def reactivar(usuario_actual):
     try:    
         if "_id" not in request.json:
             return jsonify({
                 "estado" : "ADVERTENCIA",
                 "mensaje": "Ha ocurrido un error, es necesario proporcionar un id de usuario para desactivar"
             })
-        if controlador_usuario.reactivar(request.json["_id"]):
+        if controlador_usuario.reactivar(request.json["_id"],usuario_actual._id):
             return jsonify({
                 "estado" : "OK",
                 "mensaje": "Usuario reactivado correctamente"
@@ -145,7 +150,8 @@ def reactivar():
         })
 
 @usuario_route.route('/consultar', methods=['POST'])
-def consultar():
+@sesion.token_required
+def consultar(usuario_actual):
     estado = "OK"
     mensaje = "Información consultada correctamente"
 

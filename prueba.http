@@ -4,15 +4,16 @@ GET http://127.0.0.1:5000/usuario/consultar HTTP/1.1
 ###
 
 POST http://127.0.0.1:5000/usuario/agregar HTTP/1.1
+x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjIsImV4cGlyYWNpb24iOiIyMDIxLTAzLTI0IDAyOjQ4OjA1LjExNTM0NiJ9.VDG-H8oFxzT-j1qoWCsPAnwFJ5X3cBM6ygG36sWtFd0
 Content-Type: application/json
 
 {
-    "nombre": "Marco",
-    "apellido_1": "Villegas",
-    "apellido_2": "Cervantes",
-    "rfc": "VICI990407DW0",
-    "nombre_acceso":"marcoSexMachine69",
-    "contrasena":"admin",
+    "nombre": "Pris",
+    "apellido_1": "La",
+    "apellido_2": "Master",
+    "rfc": "PRIS990407DW0",
+    "nombre_acceso":"prisMaster666",
+    "contrasena":"prispris",
     "estatus":"Activo",
     "rol_usuario":1
 }
@@ -36,20 +37,20 @@ Content-Type: application/json
 ###
 
 POST http://127.0.0.1:5000/usuario/modificar HTTP/1.1
+x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjIsImV4cGlyYWNpb24iOiIyMDIxLTAzLTI0IDAyOjQ4OjA1LjExNTM0NiJ9.VDG-H8oFxzT-j1qoWCsPAnwFJ5X3cBM6ygG36sWtFd0
 Content-Type: application/json
 
 {
-    "_id": 2,
-    "apellido_1": "Candelario",
-    "apellido_2": "Hermosillo",
-    "contrasena": "123",
-    "estatus": "Activo",
-    "nombre": "Cande",
-    "nombre_acceso": "CandeCandelario",
-    "rfc": "CAHCXXXXXXGD1",
-    "rol_usuario": 2
-  }
-
+    "_id" : 10,
+    "nombre": "Pris",
+    "apellido_1": "La",
+    "apellido_2": "Master Pro",
+    "rfc": "PRIS990407DW0",
+    "nombre_acceso":"prisMaster666",
+    "contrasena":"prispris",
+    "estatus":"Activo",
+    "rol_usuario":1
+}
 ###
 
 POST http://127.0.0.1:5000/usuario/desactivar HTTP/1.1
@@ -81,18 +82,18 @@ rol
 
 POST http://127.0.0.1:5000/rol-usuario/agregar HTTP/1.1
 Content-Type: application/json
-x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjIsImV4cGlyYWNpb24iOiIyMDIxLTAzLTIxIDAyOjA2OjQ4LjUwMDA5MCJ9.nHZ9gAaBMwV_tRVPWhgF4oshXMVwtbtuZITi4Xzc_sY
+x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjIsImV4cGlyYWNpb24iOiIyMDIxLTAzLTIyIDIzOjA2OjA4LjcyOTM4OCJ9.DEryEpJA_ijM0LxQC-v-fvgjLQk7S1S-yxL5MflHJeg
 
 {
-    "nombre": "Administrador productos",
-    "descripcion": "Administrador que solo puede modificar productos"
+    "nombre": "Administrador test",
+    "descripcion": "Administrador de prueba"
 }
 
 ###
 
 POST http://127.0.0.1:5000/rol-usuario/modificar HTTP/1.1
 Content-Type: application/json
-x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjIsImV4cGlyYWNpb24iOiIyMDIxLTAzLTIxIDAxOjI0OjQyLjI3ODQ3NSJ9.ogup_Hqm7YQ5wBojnKkD93z2S2wnqR49Gid8DYM3WAU
+x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjIsImV4cGlyYWNpb24iOiIyMDIxLTAzLTI0IDAyOjEwOjUxLjQ3Njk1NCJ9.c12VFZhWXSaztlrXWtKNNvD1ZWIXFBAl6BB9YU8laZQ
 
 {
     "_id": 3,
@@ -128,14 +129,20 @@ Content-Type: application/json
 
 
 ###
+
+
 LOGIN
 ###
 POST http://127.0.0.1:5000/security/login HTTP/1.1
-Authorization: Basic marcoSexMachine69:admin
+Authorization: Basic CandeCandelario:123
+Content-Type: application/json
 
-
+{
+    "dispositivo" : "MOZILLA",
+    "direccion_ip": "177.228.43.142"
+}
 ###
+POST http://127.0.0.1:5000/security/logout HTTP/1.1
+x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjIsImV4cGlyYWNpb24iOiIyMDIxLTAzLTIzIDAzOjAzOjAyLjIwNDczNyJ9.6dTy44YD5oD9K__0ZjXKAP3rmDYc2gYMGw_a6IIsQxE
 
-eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjIsImV4cGlyYWNpb24iOiIyMDIxLTAzLTIxIDAxOjI0OjQyLjI3ODQ3NSJ9.ogup_Hqm7YQ5wBojnKkD93z2S2wnqR49Gid8DYM3WAU
 
-###
