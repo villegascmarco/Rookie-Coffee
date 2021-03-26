@@ -81,7 +81,7 @@ def eliminar_venta(venta):
             'El atributo venta no debe estar vacío.')
 
     detalles_venta = db.session.query(Detalle_venta).filter(
-        Detalle_venta.venta == venta)
+        Detalle_venta.venta == venta, Detalle_venta.estatus != 'Inactivo')
 
     for detalle in detalles_venta:
 
