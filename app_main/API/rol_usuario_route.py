@@ -2,18 +2,21 @@ from flask import Blueprint
 from flask import jsonify, request,jsonify
 from nucleo.controlador import controlador_rol_usuario
 from nucleo.controlador import controlador_inicio_sesion as sesion
+from nucleo.controlador import controlador_datos_entrada as datos
 
 
 rol_usuario_route = Blueprint("rol_usuario_route", __name__,url_prefix='/rol-usuario')
 
 
 @rol_usuario_route.route('/agregar', methods=['POST'])
+@datos.validar_solicitud
 @sesion.token_required
 def agregar(usuario_actual):
     try:
         if controlador_rol_usuario.agregar(
                 request.json["nombre"],
-                request.json["descripcion"]
+                request.json["descripcion"],
+                usuario_actual._id
             ):
             return jsonify({
                     "estado" : "OK",
@@ -39,6 +42,7 @@ def agregar(usuario_actual):
 
 
 @rol_usuario_route.route('/modificar', methods=['POST'])
+@datos.validar_solicitud
 @sesion.token_required
 def modificar(usuario_actual):
     try:
@@ -50,7 +54,8 @@ def modificar(usuario_actual):
         if controlador_rol_usuario.modificar(
                 request.json["_id"],
                 request.json["nombre"],
-                request.json["descripcion"]
+                request.json["descripcion"],
+                usuario_actual._id
             ):
             return jsonify({
                     "estado" : "OK",
@@ -75,6 +80,7 @@ def modificar(usuario_actual):
         })
 
 @rol_usuario_route.route('/desactivar', methods = ["POST"])
+@datos.validar_solicitud
 @sesion.token_required
 def desactivar(usuario_actual):
     try:    
@@ -83,7 +89,7 @@ def desactivar(usuario_actual):
                 "estado" : "ADVERTENCIA",
                 "mensaje": "Ha ocurrido un error, es necesario proporcionar un id de rol para desactivar"
             })
-        if controlador_rol_usuario.desactivar(request.json["_id"]):
+        if controlador_rol_usuario.desactivar(request.json["_id"],usuario_actual._id):
             return jsonify({
                 "estado" : "OK",
                 "mensaje": "Rol desactivado correctamente"
@@ -106,6 +112,7 @@ def desactivar(usuario_actual):
         })
 
 @rol_usuario_route.route('/reactivar', methods = ["POST"])
+@datos.validar_solicitud
 @sesion.token_required
 def reactivar(usuario_actual):
     try:    
@@ -114,7 +121,7 @@ def reactivar(usuario_actual):
                 "estado" : "ADVERTENCIA",
                 "mensaje": "Ha ocurrido un error, es necesario proporcionar un id de rol para reactivar"
             })
-        if controlador_rol_usuario.reactivar(request.json["_id"]):
+        if controlador_rol_usuario.reactivar(request.json["_id"],usuario_actual._id):
             return jsonify({
                 "estado" : "OK",
                 "mensaje": "Rol reactivado correctamente"
@@ -137,6 +144,7 @@ def reactivar(usuario_actual):
         })
 
 @rol_usuario_route.route('/consultar', methods=['POST'])
+@datos.validar_solicitud
 @sesion.token_required
 def consultar(usuario_actual):
     estado = "OK"

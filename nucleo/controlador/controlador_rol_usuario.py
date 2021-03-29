@@ -2,7 +2,7 @@ from nucleo.modelo.rol_usuario import Rol_usuario
 from nucleo.controlador import controlador_log_acciones_usuario as log
 from app_main.conexion import db
 
-def agregar(nombre,descripcion):
+def agregar(nombre,descripcion,usuario_actual_id):
     rol_usuario = Rol_usuario(
         nombre = nombre,
         descripcion = descripcion,
@@ -16,7 +16,7 @@ def agregar(nombre,descripcion):
 
     return True
 
-def modificar(_id,nombre,descripcion):
+def modificar(_id,nombre,descripcion,usuario_actual_id):
     rolModificar = db.session.query(Rol_usuario).filter(Rol_usuario._id == _id).first()
     rolModificar.nombre = nombre
     rolModificar.descripcion = descripcion
@@ -27,7 +27,7 @@ def modificar(_id,nombre,descripcion):
 
     return True
 
-def desactivar(_id):
+def desactivar(_id,usuario_actual_id):
     rolDesactivar = db.session.query(Rol_usuario).filter(Rol_usuario._id == _id).first()
     rolDesactivar.estatus = 'Inactivo'
     
@@ -38,7 +38,7 @@ def desactivar(_id):
     return True
 
 
-def reactivar(_id):
+def reactivar(_id,usuario_actual_id):
     rolReactivar = db.session.query(Rol_usuario).filter(Rol_usuario._id == _id).first()
     rolReactivar.estatus = 'Activo'
     
@@ -53,5 +53,3 @@ def consultar(_id):
         return Rol_usuario.query.all()
     else:
         return db.session.query(Rol_usuario).filter(Rol_usuario._id == _id).first()
-
-
