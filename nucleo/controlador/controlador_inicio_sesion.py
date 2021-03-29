@@ -2,6 +2,7 @@ from functools import wraps
 from flask import current_app,request,jsonify
 from nucleo.modelo.usuario import Usuario
 from nucleo.modelo.inicio_sesion import Inicio_sesion
+
 from app_main.conexion import db
 import datetime
 import jwt 
