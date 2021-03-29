@@ -32,7 +32,6 @@ def modificar(_id, nombre, descripcion, precio, usuario, objIngredienteProducto)
     productoModificar.usuario = usuario
     productoModificar.fecha_registro = ahora.strftime("%d/%m/%Y  %H:%M:%S")
     db.session.add(productoModificar)
-
     for x in objIngredienteProducto:
         Controlador_Ingrediente.modificarIgrePro(x)
     
@@ -43,6 +42,7 @@ def desactivar(_id):
     productoDesactivar = db.session.query(Producto).filter(Producto._id == _id).first()
     productoDesactivar.estatus = 'Inactivo'
     db.session.add(productoDesactivar)
+    Controlador_Ingrediente.desactivarIgrePro(productoDesactivar._id)
     db.session.commit()
     return True
 
@@ -50,6 +50,7 @@ def reactivar(_id):
     productoReactivar = db.session.query(Producto).filter(Producto._id == _id).first()
     productoReactivar.estatus = 'Activo'
     db.session.add(productoReactivar)
+    Controlador_Ingrediente.reactivarIgrePro(productoReactivar._id)
     db.session.commit()
     return True
 

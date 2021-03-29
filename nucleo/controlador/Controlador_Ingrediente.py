@@ -82,7 +82,7 @@ def agregarIgrePro(objeto ,usuario, producto):
 
 
 def modificarIgrePro(objeto):
-    ingredienteProductoModificar =  db.session.query().filter(Ingrediente_producto.producto == objeto.get("_idproducto")).first()
+    ingredienteProductoModificar =  db.session.query(Ingrediente_producto).filter(Ingrediente_producto._id == objeto.get("_id")).first()
     print(ingredienteProductoModificar)
     ingredienteProductoModificar.cantidad_requerida = objeto.get("cantidad_requerida"),
     ingredienteProductoModificar.ingrediente = objeto.get("ingrediente"),
@@ -92,17 +92,17 @@ def modificarIgrePro(objeto):
     return True
 
 def desactivarIgrePro(_id):
-    ingredienteProductoDesactivar = db.session.query(Ingrediente_producto).filter(Ingrediente_producto._id == _id).first()
-    ingredienteProductoDesactivar.estatus = 'Inactivo'
-    db.session.add(ingredienteProductoDesactivar)
-    db.session.commit()
+    ingredienteProductoDesactivar = db.session.query(Ingrediente_producto).filter(Ingrediente_producto.producto.like(_id)).all()
+    for a in ingredienteProductoDesactivar:
+            a.estatus = 'Inactivo'
+    db.session.add(a)
     return True
 
 def reactivarIgrePro(_id):
-    ingredienteProductoReactivar = db.session.query(Ingrediente_producto).filter(Ingrediente_producto._id == _id).first()
-    ingredienteProductoReactivar.estatus = 'Activo'
-    db.session.add(ingredienteProductoReactivar)
-    db.session.commit()
+    ingredienteProductoReactivar = db.session.query(Ingrediente_producto).filter(Ingrediente_producto.producto.like(_id)).all()
+    for a in ingredienteProductoReactivar:
+        a.estatus = 'Activo'
+    db.session.add(a)
     return True
 
 def consultarallIngredientesProductos():
