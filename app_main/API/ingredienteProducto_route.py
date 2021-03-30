@@ -1,7 +1,7 @@
 import json 
 from flask import Blueprint, jsonify, request
 from nucleo.controlador import Controlador_Ingrediente
-from app.conexion import db
+from app_main.conexion import db
 
 ingredienteProducto_route = Blueprint('ingredienteProducto_route', __name__, url_prefix='/ingredienteProducto')
 

@@ -1,5 +1,5 @@
 from nucleo.modelo.Ingrediente import Ingrediente, Ingrediente_producto
-from app.conexion import db
+from app_main.conexion import db
 from datetime import datetime
 
 ahora = datetime.now()

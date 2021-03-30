@@ -1,5 +1,5 @@
 #Importamos el objeto de la base de datos __init__.py
-from app.conexion import db
+from app_main.conexion import db
 from flask_sqlalchemy import SQLAlchemy
 
 class Ingrediente(db.Model):
