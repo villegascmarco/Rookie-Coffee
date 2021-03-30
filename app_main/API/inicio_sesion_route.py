@@ -28,6 +28,12 @@ def login():
 
     usuario = Usuario.query.filter_by(nombre_acceso=auth["username"]).first()   
 
+    if not usuario:
+        return jsonify({
+                "estado":"ERROR",
+                "mensaje":"Token invalido"
+            })
+
     if sesion.consultar_por_usuario(usuario._id):
         if not sesion.logout(usuario._id):
             return jsonify({
