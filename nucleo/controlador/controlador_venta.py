@@ -58,6 +58,27 @@ def buscar_id(_id):
     return diccionario
 
 
+def validateFloat(value, atributo):
+    try:
+        raw_data = value[atributo]
+        if type(raw_data) == int:
+            raise Exception(f"Formato incorrecto en {atributo}")
+        return float(raw_data)
+    except Exception:
+        raise Exception(f"Formato incorrecto en {atributo}")
+
+
+def validateInt(value, atributo):
+    try:
+        raw_data = value[atributo]
+        if type(raw_data) == float:
+            raise Exception(f"Formato incorrecto en {atributo}")
+
+        return int(raw_data)
+    except Exception:
+        raise Exception(f"Formato incorrecto en {atributo}")
+
+
 def crear(request, usuario_actual):
     if not request.json:
         raise Exception(
@@ -66,7 +87,7 @@ def crear(request, usuario_actual):
     requestJSON = request.get_json()
 
     fecha = datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
-    total_venta = obtener_validar(requestJSON, 'total_venta')
+    total_venta = validateFloat(requestJSON, 'total_venta')
     usuario = usuario_actual._id
     detalles = obtener_validar(requestJSON, 'detalles')
 
@@ -75,12 +96,18 @@ def crear(request, usuario_actual):
         total_venta=total_venta,
         estatus=1,
         usuario=usuario)
-
     db.session.add(nueva_venta)
 
     db.session.flush()  # Get inserted ID
     crear_detalle(detalles, nueva_venta._id)
-    db.session.commit()
+    try:
+        db.session.commit()
+    except Exception as e:
+        if str(e).__contains__('IntegrityError'):
+            raise Exception('El artículo no existe.')
+        else:
+            raise Exception(
+                'Hubo un error interno. Por favor consultelo con un técnico.')
     return buscar_id(nueva_venta._id)
 
 
@@ -91,12 +118,16 @@ def modificar(request):
 
     requestJSON = request.get_json()
 
-    total_venta = obtener_validar(requestJSON, 'total_venta')
+    total_venta = validateFloat(requestJSON, 'total_venta')
     detalles = obtener_validar(requestJSON, 'detalles')
-    _id = obtener_validar(requestJSON, '_id')
+    _id = validateInt(requestJSON, '_id')
 
     venta_modificada = Venta.query.filter(
         Venta._id == _id).first()
+
+    if not venta_modificada:
+        raise Exception(
+            'No hay ningún registro que coincida con el ID proporcionado.')
 
     venta_modificada.total_venta = total_venta
 
@@ -104,7 +135,14 @@ def modificar(request):
 
     eliminar_venta(venta_modificada._id)
     crear_detalle(detalles, venta_modificada._id)
-    db.session.commit()
+    try:
+        db.session.commit()
+    except Exception as e:
+        if str(e).__contains__('IntegrityError'):
+            raise Exception('El artículo no existe.')
+        else:
+            raise Exception(
+                'Hubo un error interno. Por favor consultelo con un técnico.')
     return buscar_id(venta_modificada._id)
 
 
@@ -115,7 +153,7 @@ def eliminar(request):
 
     requestJSON = request.json
 
-    _id = obtener_validar(requestJSON, '_id')
+    _id = validateInt(requestJSON, '_id')
 
     fecha = obtener_validar(requestJSON, 'fecha')
     validar_formato(fecha, 'fecha')

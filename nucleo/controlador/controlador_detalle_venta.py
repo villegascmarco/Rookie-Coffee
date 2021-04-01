@@ -13,6 +13,16 @@ def obtener_validar(json, atributo):
     return valor
 
 
+def validateInt(value, atributo):
+    try:
+        if type(value) == float:
+            raise Exception(f"Formato incorrecto en {atributo}")
+
+        return int(value)
+    except Exception:
+        raise Exception(f"Formato incorrecto en {atributo}")
+
+
 def buscar_venta(venta):
     if not venta:
         raise Exception(
@@ -46,10 +56,13 @@ def crear(detalles, venta):
             'Productos no válidos al validar el detalle.')
 
     for detalle in detalles:
+        idProducto = validateInt(detalle.get('producto'), 'producto')
         nuevo_detalle = Detalle_venta(
-            cantidad=obtener_validar(detalle, 'cantidad'),
-            precio_historico=obtener_validar(detalle, 'precio_historico'),
-            producto=detalle.get('producto'),
+            producto=idProducto,
+            cantidad=validateInt(detalle.get('cantidad'),
+                                 f'cantidad del producto {idProducto}'),
+            precio_historico=validateInt(detalle.get(
+                'precio_historico'), f'precio_historico del producto {idProducto}'),
             venta=venta)
         db.session.add(nuevo_detalle)
 
