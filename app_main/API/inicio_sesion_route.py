@@ -15,7 +15,7 @@ import jwt
 inicio_sesion_route = Blueprint("inicio_sesion_route", __name__,url_prefix='/security')
 
 @inicio_sesion_route.route('/login', methods=['POST'])  
-@datos.validar_solicitud
+# @datos.validar_solicitud
 def login(): 
  
     auth = request.authorization   
@@ -71,7 +71,7 @@ def login():
             })
 
 @inicio_sesion_route.route('/logout',methods=['POST'])
-@datos.validar_solicitud
+# @datos.validar_solicitud
 @sesion.token_required
 def logout(usuario_actual):
     try:
