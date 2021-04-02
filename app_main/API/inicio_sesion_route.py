@@ -31,7 +31,7 @@ def login():
     if not usuario:
         return jsonify({
                 "estado":"ERROR",
-                "mensaje":"Token invalido"
+                "mensaje":"Usuario inexistente"
             })
 
     if sesion.consultar_por_usuario(usuario._id):
