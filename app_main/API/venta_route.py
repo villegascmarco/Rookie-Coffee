@@ -76,13 +76,13 @@ def modificar(usuario_actual):
     return jsonify({"estado": estado, "mensaje": mensaje, "contenido": contenido})
 
 
-@venta_route.route('/eliminar', methods=['POST'])
+@venta_route.route('/desactivar', methods=['POST'])
 @sesion.token_required
-def eliminar(usuario_actual):
+def desactivar(usuario_actual):
     estado = ''
     mensaje = ''
     try:
-        controlador.eliminar(request)
+        controlador.desactivar(request)
 
         estado = "OK"
         mensaje = "Venta eliminada"

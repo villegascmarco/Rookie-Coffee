@@ -1,4 +1,5 @@
 from nucleo.modelo.detalle_venta import Detalle_venta
+from nucleo.controlador import Controlador_Ingrediente
 from app_main.conexion import db
 import datetime
 import json
@@ -67,6 +68,8 @@ def crear(detalles, venta):
         db.session.add(nuevo_detalle)
 
         # Restar al master del producto
+        Controlador_Ingrediente.restarCantidadDisponible(
+            idProducto, nuevo_detalle.cantidad)
 
 
 def modificar(detalles, venta):
@@ -84,8 +87,6 @@ def modificar(detalles, venta):
             producto=detalle.get('producto'),
             venta=venta)
         db.session.add(nuevo_detalle)
-
-        # Restar al master del producto
 
 
 def eliminar_venta(venta):

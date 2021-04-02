@@ -146,7 +146,7 @@ def modificar(request):
     return buscar_id(venta_modificada._id)
 
 
-def eliminar(request):
+def desactivar(request):
     if not request.json:
         raise Exception(
             'JSON no encontrado. El JSON es necesario para procesar la petición.')
