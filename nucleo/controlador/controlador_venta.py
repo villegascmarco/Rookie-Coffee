@@ -1,5 +1,6 @@
 from nucleo.modelo.venta import Venta
 from nucleo.controlador.controlador_detalle_venta import crear as crear_detalle, buscar_producto, buscar_venta, eliminar_venta
+from nucleo.controlador import controlador_usuario
 from app_main.conexion import db
 import datetime
 
@@ -34,7 +35,7 @@ def buscar(request):
     validar_formato(fecha_final, 'fecha_final')
 
     ventas = Venta.query.filter(
-        (Venta.fecha.between(fecha_inicial, fecha_final)) & (Venta.estatus == 1))
+        Venta.fecha.between(fecha_inicial, fecha_final))
 
     ventas_json = []
     numero_registros = 0
@@ -43,6 +44,24 @@ def buscar(request):
         diccionario = venta.__dict__
         del diccionario['_sa_instance_state']
         diccionario['detalle_venta'] = buscar_venta(venta._id)
+        diccionario['usuario'] = controlador_usuario.consultar(
+            venta.usuario).nombre_acceso
+        ventas_json.append(diccionario)
+    return ventas_json, numero_registros
+
+
+def buscar_general(request):
+    ventas = Venta.query.all()
+
+    ventas_json = []
+    numero_registros = 0
+    for venta in ventas:
+        numero_registros += 1
+        diccionario = venta.__dict__
+        del diccionario['_sa_instance_state']
+        diccionario['detalle_venta'] = buscar_venta(venta._id)
+        diccionario['usuario'] = controlador_usuario.consultar(
+            venta.usuario).nombre_acceso
         ventas_json.append(diccionario)
     return ventas_json, numero_registros
 

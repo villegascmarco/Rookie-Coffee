@@ -34,6 +34,30 @@ def consultar(usuario_actual):
     return jsonify({"estado": estado, "mensaje": mensaje, "registros": registros, "contenido": contenido})
 
 
+@venta_route.route('/consultar_general', methods=['POST'])
+@sesion.token_required
+def consultar_general(usuario_actual):
+    estado = ''
+    mensaje = ''
+    contenido = ''
+    registros = 0
+
+    try:
+
+        ventas = controlador.buscar_general(request)
+
+        estado = "OK"
+        mensaje = "Información consultada correctamente"
+        registros = ventas[1]
+        contenido = ventas[0]
+
+    except Exception as error:
+        estado = "ERROR"
+        mensaje = str(error)
+        contenido = None
+    return jsonify({"estado": estado, "mensaje": mensaje, "registros": registros, "contenido": contenido})
+
+
 @venta_route.route('/registrar', methods=['POST'])
 @sesion.token_required
 def registrar(usuario_actual):
