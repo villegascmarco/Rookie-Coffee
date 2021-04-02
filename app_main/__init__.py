@@ -4,7 +4,7 @@ from flask import Flask, jsonify
 # Importamos la clase SQLAlchemy del módulo flask_sqlalchemy
 from flask_sqlalchemy import SQLAlchemy
 from .conexion import DB_CONFIGURACION, db
-
+from flask_cors import CORS
 from .API.usuario_route import usuario_route
 from .API.rol_usuario_route import rol_usuario_route
 from .API.inicio_sesion_route import inicio_sesion_route
@@ -16,7 +16,13 @@ from .API.ingredienteProducto_route import ingredienteProducto_route
 def create_app():
     # Creamos una instancia de Flask
     app = Flask(__name__)
-
+    CORS(app)
+    cors = CORS(app, resources={
+        r"/*":{
+            "origins" : "*"
+        }
+    })
+    app.config['CORS_HEADERS'] = 'Content-Type'
     app.register_blueprint(usuario_route)
     app.register_blueprint(rol_usuario_route)
     app.register_blueprint(inicio_sesion_route)

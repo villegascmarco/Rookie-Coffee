@@ -9,7 +9,7 @@ rol_usuario_route = Blueprint("rol_usuario_route", __name__,url_prefix='/rol-usu
 
 
 @rol_usuario_route.route('/agregar', methods=['POST'])
-@datos.validar_solicitud
+# @datos.validar_solicitud
 @sesion.token_required
 def agregar(usuario_actual):
     try:
@@ -42,7 +42,7 @@ def agregar(usuario_actual):
 
 
 @rol_usuario_route.route('/modificar', methods=['POST'])
-@datos.validar_solicitud
+# @datos.validar_solicitud
 @sesion.token_required
 def modificar(usuario_actual):
     try:
@@ -80,7 +80,7 @@ def modificar(usuario_actual):
         })
 
 @rol_usuario_route.route('/desactivar', methods = ["POST"])
-@datos.validar_solicitud
+# @datos.validar_solicitud
 @sesion.token_required
 def desactivar(usuario_actual):
     try:    
@@ -112,7 +112,7 @@ def desactivar(usuario_actual):
         })
 
 @rol_usuario_route.route('/reactivar', methods = ["POST"])
-@datos.validar_solicitud
+# @datos.validar_solicitud
 @sesion.token_required
 def reactivar(usuario_actual):
     try:    
@@ -144,7 +144,7 @@ def reactivar(usuario_actual):
         })
 
 @rol_usuario_route.route('/consultar', methods=['POST'])
-@datos.validar_solicitud
+# @datos.validar_solicitud
 @sesion.token_required
 def consultar(usuario_actual):
     estado = "OK"
