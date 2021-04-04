@@ -137,7 +137,6 @@ def restarCantidadDisponible(_idProducto, CantidadComprada):
        else:
         ingrediente_ingrediente.cantidad_disponible -= cantidadreque
               
-       db.session.add(ingrediente_ingrediente) 
-   db.session.commit()  
+       db.session.add(ingrediente_ingrediente)  
 
     
