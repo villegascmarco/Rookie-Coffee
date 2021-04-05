@@ -1,5 +1,5 @@
 from nucleo.modelo.detalle_venta import Detalle_venta
-from nucleo.controlador import Controlador_Ingrediente
+from nucleo.controlador import Controlador_Ingrediente, Controlador_Producto
 from app_main.conexion import db
 import datetime
 import json
@@ -36,8 +36,16 @@ def buscar_venta(venta):
     for detalle in detalles_venta:
         diccionario = detalle.__dict__
         del diccionario['_sa_instance_state']
+        diccionario['producto'] = consultar_producto(diccionario['producto'])
         detalles_json.append(diccionario)
     return detalles_json
+
+
+def consultar_producto(_id):
+    producto = Controlador_Producto.consultar(_id)
+    diccionario = producto.__dict__
+    del diccionario['_sa_instance_state']
+    return diccionario
 
 
 def buscar_producto(producto):
