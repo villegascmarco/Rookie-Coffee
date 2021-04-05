@@ -23,11 +23,25 @@ def obtener_validar(json, atributo):
 
 def buscar(request):
     if not request.json:
-        raise Exception(
-            'JSON no encontrado. El JSON es necesario para procesar la petición.')
+        # consultar general
+        return buscar_general(request)
 
     requestJSON = request.json
 
+    metodo_busqueda = obtener_validar(requestJSON, 'metodo_busqueda')
+    print(metodo_busqueda)
+    if metodo_busqueda == 'especifico':
+        return consultar_especifico(requestJSON)
+    if metodo_busqueda == 'semanal':
+        return consultar_semanal(requestJSON)
+    if metodo_busqueda == 'mensual':
+        return consultar_mensual(requestJSON)
+
+    raise Exception(
+        f"{metodo_busqueda} no está dentro de las opciones válidas.")
+
+
+def consultar_especifico(requestJSON):
     fecha_inicial = obtener_validar(requestJSON, 'fecha_inicial')
     validar_formato(fecha_inicial, 'fecha_inicial')
 
@@ -48,6 +62,64 @@ def buscar(request):
             venta.usuario).nombre_acceso
         ventas_json.append(diccionario)
     return ventas_json, numero_registros
+
+
+def consultar_semanal(requestJSON):
+    today = datetime.date.today()
+    fecha_inicial = today - datetime.timedelta(days=today.weekday())
+    fecha_final = fecha_inicial + datetime.timedelta(days=6)
+
+    fecha_inicial = fecha_inicial.strftime('%Y-%m-%dT%H:%M:%S')
+    fecha_final = str(fecha_final)+'T:23:59:59'
+
+    ventas = Venta.query.filter(
+        Venta.fecha.between(fecha_inicial, fecha_final))
+
+    ventas_json = []
+    numero_registros = 0
+    for venta in ventas:
+        numero_registros += 1
+        diccionario = venta.__dict__
+        del diccionario['_sa_instance_state']
+        diccionario['detalle_venta'] = buscar_venta(venta._id)
+        diccionario['usuario'] = controlador_usuario.consultar(
+            venta.usuario).nombre_acceso
+        ventas_json.append(diccionario)
+    return ventas_json, numero_registros
+
+
+def consultar_mensual(requestJSON):
+    today = datetime.date.today()
+    fecha_inicial = today - datetime.timedelta(days=today.month)
+    fecha_final = fecha_inicial + datetime.timedelta(days=6)
+
+    fecha_inicial = fecha_inicial.strftime('%Y-%m-%dT%H:%M:%S')
+    print(fecha_inicial)
+    fecha_final = str(last_day_of_month(fecha_final))+'T:23:59:59'
+    print(fecha_final)
+
+    ventas = Venta.query.filter(
+        Venta.fecha.between(fecha_inicial, fecha_final))
+
+    ventas_json = []
+    numero_registros = 0
+    for venta in ventas:
+        numero_registros += 1
+        diccionario = venta.__dict__
+        del diccionario['_sa_instance_state']
+        diccionario['detalle_venta'] = buscar_venta(venta._id)
+        diccionario['usuario'] = controlador_usuario.consultar(
+            venta.usuario).nombre_acceso
+        ventas_json.append(diccionario)
+    return ventas_json, numero_registros
+
+
+def last_day_of_month(any_day):
+    # this will never fail
+    # get close to the end of the month for any day, and add 4 days 'over'
+    next_month = any_day.replace(day=28) + datetime.timedelta(days=4)
+    # subtract the number of remaining 'overage' days to get last day of current month, or said programattically said, the previous day of the first of next month
+    return next_month - datetime.timedelta(days=next_month.day)
 
 
 def buscar_general(request):
