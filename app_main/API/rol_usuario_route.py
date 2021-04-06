@@ -10,7 +10,7 @@ rol_usuario_route = Blueprint("rol_usuario_route", __name__,url_prefix='/rol-usu
 
 @rol_usuario_route.route('/agregar', methods=['POST'])
 # @datos.validar_solicitud
-@sesion.token_required
+@sesion.token_required('Admin')
 def agregar(usuario_actual):
     try:
         if controlador_rol_usuario.agregar(
@@ -43,7 +43,7 @@ def agregar(usuario_actual):
 
 @rol_usuario_route.route('/modificar', methods=['POST'])
 # @datos.validar_solicitud
-@sesion.token_required
+@sesion.token_required('Admin')
 def modificar(usuario_actual):
     try:
         if "_id" not in request.json:
@@ -81,7 +81,7 @@ def modificar(usuario_actual):
 
 @rol_usuario_route.route('/desactivar', methods = ["POST"])
 # @datos.validar_solicitud
-@sesion.token_required
+@sesion.token_required('Admin')
 def desactivar(usuario_actual):
     try:    
         if "_id" not in request.json:
@@ -113,7 +113,7 @@ def desactivar(usuario_actual):
 
 @rol_usuario_route.route('/reactivar', methods = ["POST"])
 # @datos.validar_solicitud
-@sesion.token_required
+@sesion.token_required('Admin')
 def reactivar(usuario_actual):
     try:    
         if "_id" not in request.json:
@@ -145,7 +145,7 @@ def reactivar(usuario_actual):
 
 @rol_usuario_route.route('/consultar', methods=['POST'])
 # @datos.validar_solicitud
-@sesion.token_required
+@sesion.token_required('Admin')
 def consultar(usuario_actual):
     estado = "OK"
     mensaje = "Información consultada correctamente"
