@@ -11,15 +11,15 @@ producto_route = Blueprint('producto_route', __name__, url_prefix='/producto')
 #Agrega un producto nuevo a la base de datos
 @producto_route.route('/agregar', methods=['POST'])
 @sesion.token_required('Usuario')
-def agregarProducto():
+def agregarProducto(usuario_actual):
     try:
         if Controlador_Producto.agregar(
             request.json["nombre"],
             request.json["descripcion"],
-            request.json["precio"],
-            request.json["usuario"],  
+            request.json["precio"],  
             request.json["fecha_registro"],
-            request.json["ingrediente_producto"]):
+            request.json["ingrediente_producto"],
+            usuario_actual._id):
             return jsonify({
                 "estado" : "OK",
                 "mensaje": "Producto registrado correctamente"
@@ -44,7 +44,7 @@ def agregarProducto():
 # con la ID del producto
 @producto_route.route('/modificar', methods=['POST'])
 @sesion.token_required('Usuario')
-def modificarProducto():
+def modificarProducto(usuario_actual):
     try: 
         if "_id" not in request.json:
             return jsonify({
@@ -56,8 +56,8 @@ def modificarProducto():
             request.json["nombre"],
             request.json["descripcion"],
             request.json["precio"],
-            request.json["usuario"],
-            request.json["Ingrediente_producto"]):       
+            request.json["Ingrediente_producto"],
+            usuario_actual._id):       
             return jsonify({
                 "estado" : "OK",
                 "mensaje": "Producto modificado correctamente"
@@ -82,14 +82,14 @@ def modificarProducto():
 #cambia del estatus de activo a incativo del producto
 @producto_route.route('/desactivar', methods=['POST'])
 @sesion.token_required('Usuario')
-def desactivarProducto():  
+def desactivarProducto(usuario_actual):  
     try: 
         if "_id" not in request.json:
             return jsonify({
                 "estado" : "ADVERTENCIA",
                 "mensaje": "Ha ocurrido un error, es necesario proporcionar un id de usuario para desactivar"
             }) 
-        if Controlador_Producto.desactivar(request.json["_id"]):
+        if Controlador_Producto.desactivar(request.json["_id"], usuario_actual._id):
             return jsonify({
                 "estado" : "OK",
                 "mensaje": "Producto desactivado correctamente"
@@ -114,14 +114,14 @@ def desactivarProducto():
 # vuelave a cambiar el estatus del producto a activo
 @producto_route.route('/reactivar', methods=['POST'])
 @sesion.token_required('Usuario')
-def reactivarProducto():  
+def reactivarProducto(usuario_actual):  
     try: 
         if "_id" not in request.json:
             return jsonify({
                 "estado" : "ADVERTENCIA",
                 "mensaje": "Ha ocurrido un error, es necesario proporcionar un id de usuario para desactivar"
             }) 
-        if Controlador_Producto.reactivar(request.json["_id"]):
+        if Controlador_Producto.reactivar(request.json["_id"], usuario_actual._id):
             return jsonify({
                 "estado" : "OK",
                 "mensaje": "Producto Ractivado correctamente"
@@ -147,7 +147,7 @@ def reactivarProducto():
  # Consulta todos los productos que estan almacenados en la base de datos
 @producto_route.route("/consultar", methods=['GET'])
 @sesion.token_required('Usuario')
-def consultarProductos():
+def consultarProductos(usuario_actual):
     productos = Controlador_Producto.consultarallproducto()
     producto_json = []
     for producto in productos:
@@ -160,7 +160,7 @@ def consultarProductos():
 ### Buscar por la id el registro del producto 
 @producto_route.route("/buscar", methods=['POST'])
 @sesion.token_required('Usuario')
-def buscarProductos():
+def buscarProductos(usuario_actual):
     estado = "OK"
     mensaje = "Información consultada correctamente"
     

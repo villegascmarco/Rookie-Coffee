@@ -17,10 +17,10 @@ def create_app():
     # Creamos una instancia de Flask
     app = Flask(__name__)
 
-    app.register_blueprint(usuario_route)
-    app.register_blueprint(rol_usuario_route)
+    #app.register_blueprint(usuario_route)
+    #app.register_blueprint(rol_usuario_route)
     app.register_blueprint(inicio_sesion_route)
-    app.register_blueprint(venta_route)
+    #app.register_blueprint(venta_route)
     app.register_blueprint(producto_route)
     app.register_blueprint(ingrediente_route)
     app.register_blueprint(ingredienteProducto_route)
