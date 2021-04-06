@@ -11,7 +11,7 @@ def agregar():
 
 
 @venta_route.route('/consultar', methods=['POST'])
-@sesion.token_required
+@sesion.token_required('Usuario')
 def consultar(usuario_actual):
     estado = ''
     mensaje = ''
@@ -35,7 +35,7 @@ def consultar(usuario_actual):
 
 
 @venta_route.route('/registrar', methods=['POST'])
-@sesion.token_required
+@sesion.token_required('Usuario')
 def registrar(usuario_actual):
     estado = ''
     mensaje = ''
@@ -56,7 +56,7 @@ def registrar(usuario_actual):
 
 
 @venta_route.route('/modificar', methods=['POST'])
-@sesion.token_required
+@sesion.token_required('Usuario')
 def modificar(usuario_actual):
     estado = ''
     mensaje = ''
@@ -77,7 +77,7 @@ def modificar(usuario_actual):
 
 
 @venta_route.route('/desactivar', methods=['POST'])
-@sesion.token_required
+@sesion.token_required('Usuario')
 def desactivar(usuario_actual):
     estado = ''
     mensaje = ''
