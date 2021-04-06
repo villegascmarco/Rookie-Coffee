@@ -1,6 +1,7 @@
 import json 
 from flask import Blueprint, jsonify, request
 from nucleo.controlador import Controlador_Producto, Controlador_Ingrediente
+from nucleo.controlador import controlador_inicio_sesion as sesion
 #from nucleo.controlador import controlador_inicio_sesion as sesion
 from app_main.conexion import db
 
@@ -9,7 +10,7 @@ producto_route = Blueprint('producto_route', __name__, url_prefix='/producto')
 
 #Agrega un producto nuevo a la base de datos
 @producto_route.route('/agregar', methods=['POST'])
-#@sesion.token_required
+@sesion.token_required('Usuario')
 def agregarProducto():
     try:
         if Controlador_Producto.agregar(
@@ -42,6 +43,7 @@ def agregarProducto():
 # modidica los productos que estan almacenados en la base de datos 
 # con la ID del producto
 @producto_route.route('/modificar', methods=['POST'])
+@sesion.token_required('Usuario')
 def modificarProducto():
     try: 
         if "_id" not in request.json:
@@ -79,6 +81,7 @@ def modificarProducto():
 
 #cambia del estatus de activo a incativo del producto
 @producto_route.route('/desactivar', methods=['POST'])
+@sesion.token_required('Usuario')
 def desactivarProducto():  
     try: 
         if "_id" not in request.json:
@@ -110,6 +113,7 @@ def desactivarProducto():
         
 # vuelave a cambiar el estatus del producto a activo
 @producto_route.route('/reactivar', methods=['POST'])
+@sesion.token_required('Usuario')
 def reactivarProducto():  
     try: 
         if "_id" not in request.json:
@@ -142,6 +146,7 @@ def reactivarProducto():
         
  # Consulta todos los productos que estan almacenados en la base de datos
 @producto_route.route("/consultar", methods=['GET'])
+@sesion.token_required('Usuario')
 def consultarProductos():
     productos = Controlador_Producto.consultarallproducto()
     producto_json = []
@@ -154,6 +159,7 @@ def consultarProductos():
 
 ### Buscar por la id el registro del producto 
 @producto_route.route("/buscar", methods=['POST'])
+@sesion.token_required('Usuario')
 def buscarProductos():
     estado = "OK"
     mensaje = "Información consultada correctamente"
