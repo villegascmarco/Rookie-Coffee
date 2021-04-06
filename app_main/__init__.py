@@ -22,9 +22,9 @@ def create_app():
     })
     app.config['CORS_HEADERS'] = 'Content-Type'
     app.register_blueprint(usuario_route)
-    app.register_blueprint(rol_usuario_route)
-    app.register_blueprint(inicio_sesion_route)
-    app.register_blueprint(venta_route)
+    # app.register_blueprint(rol_usuario_route)
+    # app.register_blueprint(inicio_sesion_route)
+    # app.register_blueprint(venta_route)
 
     app.config.from_json(DB_CONFIGURACION)
 

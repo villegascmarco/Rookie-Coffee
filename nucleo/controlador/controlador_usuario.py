@@ -36,7 +36,9 @@ def modificar(_id,nombre,apellido_1,apellido_2,rfc,nombre_acceso,contrasena,rol_
     usuarioModificar.apellido_2 = apellido_2
     usuarioModificar.rfc = rfc
     usuarioModificar.nombre_acceso = nombre_acceso
-    usuarioModificar.contrasena = generate_password_hash(contrasena, method='sha256')
+    if contrasena != "":  
+        usuarioModificar.contrasena = generate_password_hash(contrasena, method='sha256')
+    
     usuarioModificar.rol_usuario = rol_usuario
     
     db.session.add(usuarioModificar)
