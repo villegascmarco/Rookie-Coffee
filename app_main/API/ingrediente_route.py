@@ -8,7 +8,7 @@ ingrediente_route = Blueprint('ingrediente_route', __name__, url_prefix='/ingred
 
 #Agrega un Ingrediente nuevo a la base de datos
 @ingrediente_route.route('/agregar', methods=['POST'])
-@sesion.token_required('Emp')
+@sesion.token_required('Usuario')
 def agregarIngrediente():
     try:
         if Controlador_Ingrediente.agregar(
@@ -41,7 +41,7 @@ def agregarIngrediente():
 # modidica los Ingredientes  que estan almacenados en la base de datos 
 # con la ID del Ingrediente
 @ingrediente_route.route('/modificar', methods=['POST'])
-@sesion.token_required('Emp')
+@sesion.token_required('Usuario')
 def modificarIngredinete():
     try: 
         if "_id" not in request.json:
@@ -80,7 +80,7 @@ def modificarIngredinete():
         
 #cambia del estatus de activo a incativo del Ingrediente
 @ingrediente_route.route('/desactivar', methods=['POST'])
-@sesion.token_required('Emp')
+@sesion.token_required('Usuario')
 def desactivarIngrediente():  
     try: 
         if "_id" not in request.json:
@@ -112,7 +112,7 @@ def desactivarIngrediente():
         
 # vuelave a cambiar el estatus del Ingrediente a activo
 @ingrediente_route.route('/reactivar', methods=['POST'])
-@sesion.token_required('Emp')
+@sesion.token_required('Usuario')
 def reactivarIngrediente():  
     try: 
         if "_id" not in request.json:
@@ -144,7 +144,7 @@ def reactivarIngrediente():
 
 # Consulta todos los ingredintes que estan almacenados en la base de datos
 @ingrediente_route.route("/consultar", methods=['GET'])
-@sesion.token_required('Emp')
+@sesion.token_required('Usuario')
 def consultarIngredientes():
     ingredientes = Controlador_Ingrediente.consultarallIngredientes()
     ingredientes_json = []
@@ -157,7 +157,7 @@ def consultarIngredientes():
 
 
 @ingrediente_route.route("/buscar", methods=['POST'])
-@sesion.token_required('Emp')
+@sesion.token_required('Usuario')
 def buscarIngredientes():
     estado = "OK"
     mensaje = "Información consultada correctamente"
