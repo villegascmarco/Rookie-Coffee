@@ -145,7 +145,7 @@ Content-Type: application/json
 
 ###
 POST http://127.0.0.1:5000/security/login HTTP/1.1
-Authorization: Basic CandeCandelario:123
+Authorization: Basic Hendrix:123
 Content-Type: application/json
 
 {
@@ -167,3 +167,122 @@ x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjIsImV4cG
 {
 
 }
+
+###
+POST http://127.0.0.1:5000/ingrediente/agregar HTTP/1.1
+x-access-tokens:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjIsImV4cGlyYWNpb24iOiIyMDIxLTA0LTA2IDAyOjM4OjE5LjgwMzM2OCJ9.IwyDUIY9JpaqJsuM1WKPFgJy7VMXRk9QWtUzgYfhFNA
+Content-Type: application/json
+
+{
+    "nombre":"awa 2",
+    "descripcion": "awa de uwu ewe",
+    "cantidad_disponible": 100,
+    "unidad_medida": "l",
+    "fecha_registro": ""
+}
+
+###
+POST http://127.0.0.1:5000/ingrediente/modificar HTTP/1.1
+x-access-tokens:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjIsImV4cGlyYWNpb24iOiIyMDIxLTA0LTA2IDAyOjM4OjE5LjgwMzM2OCJ9.IwyDUIY9JpaqJsuM1WKPFgJy7VMXRk9QWtUzgYfhFNA
+Content-Type: application/json
+
+{
+    "_id": 11,
+    "nombre":"awa de ewe",
+    "descripcion": "awa de uwu ewe",
+    "cantidad_disponible": 150,
+    "unidad_medida": "l",
+    "fecha_registro": ""
+}
+
+###
+POST http://127.0.0.1:5000/ingrediente/desactivar HTTP/1.1
+x-access-tokens:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjIsImV4cGlyYWNpb24iOiIyMDIxLTA0LTA2IDAyOjM4OjE5LjgwMzM2OCJ9.IwyDUIY9JpaqJsuM1WKPFgJy7VMXRk9QWtUzgYfhFNA
+Content-Type: application/json
+
+{
+    "_id": 11
+}
+
+###
+POST http://127.0.0.1:5000/ingrediente/reactivar HTTP/1.1
+x-access-tokens:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjIsImV4cGlyYWNpb24iOiIyMDIxLTA0LTA2IDAyOjM4OjE5LjgwMzM2OCJ9.IwyDUIY9JpaqJsuM1WKPFgJy7VMXRk9QWtUzgYfhFNA
+Content-Type: application/json
+
+{
+    "_id": 11
+}
+
+###
+GET  http://127.0.0.1:5000/ingrediente/consultar HTTP/1.1
+x-access-tokens:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjIsImV4cGlyYWNpb24iOiIyMDIxLTA0LTA2IDAyOjM4OjE5LjgwMzM2OCJ9.IwyDUIY9JpaqJsuM1WKPFgJy7VMXRk9QWtUzgYfhFNA
+
+
+###
+POST http://127.0.0.1:5000/producto/agregar HTTP/1.1
+x-access-tokens:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjIsImV4cGlyYWNpb24iOiIyMDIxLTA0LTA2IDIwOjQ2OjQzLjI3NTIyMSJ9.krGo_Xj0noDlvcWgF4_8b9wm7WYgM-SoWQ7hGiYT9eI
+Content-Type: application/json
+{
+    "nombre": "capuchino en de prueba en http",
+    "descripcion": "capuchino en prueba",
+    "precio": 49,
+    "fecha_registro": "",
+    "Ingrediente_producto":[
+         {  
+            "cantidad_requerida": 50,
+            "ingrediente":  7 
+         },
+         { 
+            "cantidad_requerida": 40,
+            "ingrediente":  5
+         }
+    ] 
+}
+
+###
+POST http://127.0.0.1:5000/producto/modificar HTTP/1.1
+x-access-tokens:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjIsImV4cGlyYWNpb24iOiIyMDIxLTA0LTA2IDAyOjM4OjE5LjgwMzM2OCJ9.IwyDUIY9JpaqJsuM1WKPFgJy7VMXRk9QWtUzgYfhFNA
+Content-Type: application/json
+
+{
+    "_id":9,
+    "nombre": "capuchino en modificacion",
+    "descripcion": "capuchino modificado xd",
+    "precio": 29,
+    "fecha_registro": "",
+    "Ingrediente_producto":[
+         {  
+            "_id":4,
+            "cantidad_requerida": 30,
+            "ingrediente":  7 
+         },
+         { 
+            "_id":5,
+            "cantidad_requerida": 40,
+            "ingrediente":  5
+         }
+    ] 
+}
+
+
+###
+POST http://127.0.0.1:5000/producto/desactivar HTTP/1.1
+x-access-tokens:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjIsImV4cGlyYWNpb24iOiIyMDIxLTA0LTA2IDAyOjM4OjE5LjgwMzM2OCJ9.IwyDUIY9JpaqJsuM1WKPFgJy7VMXRk9QWtUzgYfhFNA
+Content-Type: application/json
+
+{
+    "_id": 11
+}
+
+###
+POST http://127.0.0.1:5000/producto/reactivar HTTP/1.1
+x-access-tokens:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjIsImV4cGlyYWNpb24iOiIyMDIxLTA0LTA2IDAyOjM4OjE5LjgwMzM2OCJ9.IwyDUIY9JpaqJsuM1WKPFgJy7VMXRk9QWtUzgYfhFNA
+Content-Type: application/json
+
+{
+    "_id": 11
+}
+
+###
+GET  http://127.0.0.1:5000/producto/consultar HTTP/1.1
+x-access-tokens:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjIsImV4cGlyYWNpb24iOiIyMDIxLTA0LTA2IDIwOjQ2OjQzLjI3NTIyMSJ9.krGo_Xj0noDlvcWgF4_8b9wm7WYgM-SoWQ7hGiYT9eI
