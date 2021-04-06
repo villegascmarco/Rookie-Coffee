@@ -32,6 +32,8 @@ def buscar(request):
     print(metodo_busqueda)
     if metodo_busqueda == 'especifico':
         return consultar_especifico(requestJSON)
+    if metodo_busqueda == 'general':
+        return consultar_general()
     if metodo_busqueda == 'semanal':
         return consultar_semanal(requestJSON)
     if metodo_busqueda == 'mensual':
@@ -122,7 +124,7 @@ def last_day_of_month(any_day):
     return next_month - datetime.timedelta(days=next_month.day)
 
 
-def buscar_general(request):
+def consultar_general():
     ventas = Venta.query.all()
 
     ventas_json = []
