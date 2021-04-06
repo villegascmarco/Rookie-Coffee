@@ -1,6 +1,7 @@
 import json 
 from flask import Blueprint, jsonify, request
 from nucleo.controlador import Controlador_Producto, Controlador_Ingrediente
+from nucleo.controlador import controlador_inicio_sesion as sesion
 #from nucleo.controlador import controlador_inicio_sesion as sesion
 from app_main.conexion import db
 
