@@ -39,10 +39,8 @@ def token_required(rol_admitido):
             
             sesion_iniciada =db.session.query(Inicio_sesion).filter(Inicio_sesion.usuario ==  data['public_id'], Inicio_sesion.estatus == 'Activo').first()
             
-            
-            if rol.nombre != rol_admitido:
+            if (rol.nombre != rol_admitido) and rol_admitido != 'Any':
                raise Exception('Acceso denegado, permisos insuficientes')
-
 
             if not(sesion_iniciada.token == token and sesion_iniciada.estatus == 'Activo'):
                return jsonify({
