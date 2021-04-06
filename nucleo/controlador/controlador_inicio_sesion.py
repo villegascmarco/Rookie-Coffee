@@ -11,6 +11,7 @@ import jwt
 
 def token_required(rol_admitido):
    def inner_decorator(f):
+      @wraps(f)
       def wrapped(*args, **kwargs):
          token = None
          print(rol_admitido)
@@ -54,53 +55,10 @@ def token_required(rol_admitido):
                      'excepcion': str(e),
                      'mensaje': 'El token enviado es invalido'})
 
+         # wrap.__name__ = f.__name__
          return f(usuario_actual, *args, **kwargs)
       return wrapped
    return inner_decorator
-
-
-#DEFINICIÓN DE DECORADOR PARA VALIDACIÓN DE TOKEN
-# def token_required(f):
-#    @wraps(f)
-#    def decorator(*args, **kwargs):
-
-#       token = None
-
-#       if 'x-access-tokens' in request.headers:
-#          token = request.headers['x-access-tokens']
-
-#       if not token:
-#          return jsonify({
-#                   'estado' : 'ERROR',
-#                   'mensaje': 'Se requiere un token para continuar'
-#                })
-
-#       try:
-#          data = jwt.decode(token, current_app.config['SECRET_KEY'])
-#          expiracion = datetime.datetime.strptime(data["expiracion"], '%Y-%m-%d %H:%M:%S.%f')
-#          ahora = datetime.datetime.utcnow()
-
-#          if ahora > expiracion:
-#             return jsonify({
-#                   'estado' : 'SESION CADUCADA',
-#                   'mensaje': 'El token enviado ha caducado'})   
-
-#          usuario_actual = db.session.query(Usuario).filter(Usuario._id == data['public_id']).first()
-#          sesion_iniciada =db.session.query(Inicio_sesion).filter(Inicio_sesion.usuario ==  data['public_id'], Inicio_sesion.estatus == 'Activo').first()
-
-#          if not(sesion_iniciada.token == token and sesion_iniciada.estatus == 'Activo'):
-#             return jsonify({
-#                   'estado' : 'TOKEN INVALIDO',
-#                   'mensaje': 'La sesion se ha cerrado'})   
-
-#       except Exception as e:
-#          return jsonify({
-#                   'estado' : 'ERROR',
-#                   'excepcion': str(e),
-#                   'mensaje': 'El token enviado es invalido'})
-
-#       return f(usuario_actual, *args, **kwargs)
-#    return decorator
 
 def registrar_inicio_sesion(usuario,fecha_inicio_sesion,dispositivo,direccion_ip,token):
    inicio_sesion_registro = Inicio_sesion(
