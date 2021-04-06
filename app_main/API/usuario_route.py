@@ -5,10 +5,11 @@ from flask import request
 from nucleo.controlador import controlador_usuario
 from nucleo.controlador import controlador_inicio_sesion as sesion
 from app_main.conexion import db
+
 usuario_route = Blueprint("usuario_route", __name__,url_prefix='/usuario')
 
 @usuario_route.route('/agregar', methods=['POST'])
-@sesion.token_required
+@sesion.token_required('Admin')
 def agregar(usuario_actual):
     try:
         if controlador_usuario.agregar(
@@ -45,7 +46,7 @@ def agregar(usuario_actual):
 
 
 @usuario_route.route('/modificar',methods=['POST'])
-@sesion.token_required
+@sesion.token_required('Admin')
 def modificar(usuario_actual):
     try:    
         if "_id" not in request.json:
@@ -53,6 +54,12 @@ def modificar(usuario_actual):
                 "estado" : "ADVERTENCIA",
                 "mensaje": "Ha ocurrido un error, es necesario proporcionar un id de usuario para modificar"
             })
+
+        contrasena = ""
+
+        if "contrasena" in request.json:
+            contrasena = request.json["contrasena"]
+
         if controlador_usuario.modificar(
             request.json["_id"],
             request.json["nombre"],
@@ -60,7 +67,7 @@ def modificar(usuario_actual):
             request.json["apellido_2"],
             request.json["rfc"],
             request.json["nombre_acceso"],
-            request.json["contrasena"],
+            contrasena,
             request.json["rol_usuario"],
             usuario_actual._id
         ):
@@ -88,7 +95,7 @@ def modificar(usuario_actual):
         })
 
 @usuario_route.route('/desactivar', methods=["POST"])
-@sesion.token_required
+@sesion.token_required('Admin')
 def desactivar(usuario_actual):
     try:    
         if "_id" not in request.json:
@@ -119,7 +126,7 @@ def desactivar(usuario_actual):
         })
 
 @usuario_route.route('/reactivar', methods=["POST"])
-@sesion.token_required
+@sesion.token_required('Admin')
 def reactivar(usuario_actual):
     try:    
         if "_id" not in request.json:
@@ -150,7 +157,7 @@ def reactivar(usuario_actual):
         })
 
 @usuario_route.route('/consultar', methods=['POST'])
-@sesion.token_required
+@sesion.token_required('Admin')
 def consultar(usuario_actual):
     estado = "OK"
     mensaje = "Información consultada correctamente"
