@@ -56,7 +56,7 @@ def modificarProducto(usuario_actual):
             request.json["nombre"],
             request.json["descripcion"],
             request.json["precio"],
-            request.json["Ingrediente_producto"],
+            request.json["ingrediente_producto"],
             usuario_actual._id):       
             return jsonify({
                 "estado" : "OK",
@@ -148,13 +148,26 @@ def reactivarProducto(usuario_actual):
 @producto_route.route("/consultar", methods=['GET'])
 @sesion.token_required('Usuario')
 def consultarProductos(usuario_actual):
+    
     productos = Controlador_Producto.consultarallproducto()
     producto_json = []
     for producto in productos:
         producto_dictionary = producto.__dict__
         del producto_dictionary['_sa_instance_state']
+        
+        ingredientesP = Controlador_Ingrediente.consultarIngredientesXproducto(producto._id)
+        ingredientesP_json = []
+        for ingredienteP in ingredientesP:
+            ingredientesP_dictionary = ingredienteP.__dict__
+            idIngrediente = ingredientesP_dictionary["ingrediente"] 
+            del ingredientesP_dictionary["ingrediente"]
+            ingredientesP_dictionary["id_ingrediente"] = idIngrediente
+            del ingredientesP_dictionary['_sa_instance_state']
+            ingredientesP_json.append(ingredientesP_dictionary)
+            
+        producto_dictionary["ingrediente_producto"] = ingredientesP_json 
         producto_json.append(producto_dictionary)
-    return jsonify(producto_json)
+    return jsonify(producto_json, )
     
 
 ### Buscar por la id el registro del producto 
