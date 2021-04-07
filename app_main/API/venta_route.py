@@ -11,7 +11,7 @@ def agregar():
 
 
 @venta_route.route('/consultar', methods=['POST'])
-@sesion.token_required('Usuario')
+@sesion.token_required(['Usuario','Admin'])
 def consultar(usuario_actual):
     estado = ''
     mensaje = ''
