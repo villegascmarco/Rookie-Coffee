@@ -26,7 +26,7 @@ def create_app():
     app.register_blueprint(usuario_route)
     app.register_blueprint(rol_usuario_route)
     app.register_blueprint(inicio_sesion_route)
-    #app.register_blueprint(venta_route)
+    app.register_blueprint(venta_route)
     app.register_blueprint(producto_route)
     app.register_blueprint(ingrediente_route)
     app.register_blueprint(ingredienteProducto_route)

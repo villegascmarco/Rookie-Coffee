@@ -72,7 +72,7 @@ def login():
 
 @inicio_sesion_route.route('/logout',methods=['POST'])
 # @datos.validar_solicitud
-@sesion.token_required
+@sesion.token_required("Any")
 def logout(usuario_actual):
     try:
         if sesion.logout(usuario_actual._id):
