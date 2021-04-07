@@ -36,7 +36,14 @@ def buscar_venta(venta):
     for detalle in detalles_venta:
         diccionario = detalle.__dict__
         del diccionario['_sa_instance_state']
-        diccionario['producto'] = consultar_producto(diccionario['producto'])
+      
+        producto = consultar_producto(diccionario['producto'])
+        del diccionario['producto']
+        
+        diccionario['producto_id'] = producto['_id']
+        diccionario['producto_nombre'] = producto['nombre']
+        diccionario['producto_descripcion'] = producto['descripcion']
+      
         detalles_json.append(diccionario)
     return detalles_json
 
