@@ -70,6 +70,9 @@ def crear(detalles, venta):
     if type(detalles) != list:
         raise Exception(
             'Productos no válidos al validar el detalle.')
+    if len(detalles)<1:
+        raise Exception(
+            'No puede registrar una venta sin productos.')
 
     for detalle in detalles:
         idProducto = validateInt(detalle.get('producto'), 'producto')
