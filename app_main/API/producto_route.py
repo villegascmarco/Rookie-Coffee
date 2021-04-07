@@ -146,7 +146,7 @@ def reactivarProducto(usuario_actual):
         
  # Consulta todos los productos que estan almacenados en la base de datos
 @producto_route.route("/consultar", methods=['GET'])
-@sesion.token_required('Usuario')
+@sesion.token_required(['Usuario','Admin'])
 def consultarProductos(usuario_actual):
     
     productos = Controlador_Producto.consultarallproducto()
