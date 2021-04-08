@@ -26,7 +26,7 @@ def login():
                 "mensaje":"Imposible autenticar, inicio de sesion no exitoso"
                 })
 
-    usuario = Usuario.query.filter_by(nombre_acceso=auth["username"]).first()   
+    usuario = Usuario.query.filter_by(nombre_acceso=auth["username"],estatus='Activo').first()   
 
     if not usuario:
         return jsonify({
@@ -62,7 +62,9 @@ def login():
 
         return jsonify({
                 'token' : token.decode('UTF-8'),
-                'rol': controlador_rol_usuario.consultar(usuario.rol_usuario).nombre
+                'rol': controlador_rol_usuario.consultar(usuario.rol_usuario).nombre,
+                'nombre' : "{} {} {}".format(usuario.nombre,usuario.apellido_1,usuario.apellido_2),
+                'nombre_acceso': usuario.nombre_acceso
             }) 
 
     return jsonify({

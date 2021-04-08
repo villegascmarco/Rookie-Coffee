@@ -141,7 +141,7 @@ def reactivar(usuario_actual):
             })
         else:
             estado = "ERROR"
-            mensaje = "Ha ocurrido un error al reactivar el registro! Por favor verificalo con un administrador o revisa tu solicitud"
+            mensaje = "El usuario no puede ser reactivado (nombre de acceso duplicado)"
             return jsonify({
                 "estado"  : estado,
                 "mensaje" : mensaje
