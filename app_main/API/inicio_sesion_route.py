@@ -44,8 +44,6 @@ def login():
     if usuario and check_password_hash(usuario.contrasena, auth["password"]):
         token = jwt.encode({'public_id': usuario._id, 'expiracion' : str(datetime.datetime.utcnow() + datetime.timedelta(minutes=30))}, current_app.config['SECRET_KEY'])  
         try:
-            print(request.json['dispositivo'])
-            print(request.json['direccion_ip'])
             sesion.registrar_inicio_sesion(
                     usuario._id,
                     datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S'),
