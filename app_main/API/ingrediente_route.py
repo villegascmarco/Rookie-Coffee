@@ -10,15 +10,15 @@ ingrediente_route = Blueprint('ingrediente_route', __name__, url_prefix='/ingred
 #Agrega un Ingrediente nuevo a la base de datos
 @ingrediente_route.route('/agregar', methods=['POST'])
 @sesion.token_required('Usuario')
-def agregarIngrediente():
+def agregarIngrediente(usuario_actual):
     try:
         if Controlador_Ingrediente.agregar(
             request.json["nombre"],
             request.json["descripcion"],
             request.json["cantidad_disponible"],
-            request.json["unidad_medida"],
-            request.json["usuario"],  
-            request.json["fecha_registro"]):
+            request.json["unidad_medida"],  
+            request.json["fecha_registro"],
+            usuario_actual._id):
             return jsonify({
                 "estado" : "OK",
                 "mensaje": "Ingrediente registrado correctamente"
@@ -43,7 +43,7 @@ def agregarIngrediente():
 # con la ID del Ingrediente
 @ingrediente_route.route('/modificar', methods=['POST'])
 @sesion.token_required('Usuario')
-def modificarIngredinete():
+def modificarIngredinete(usuario_actual):
     try: 
         if "_id" not in request.json:
             return jsonify({
@@ -55,9 +55,9 @@ def modificarIngredinete():
             request.json["nombre"],
             request.json["descripcion"],
             request.json["cantidad_disponible"],
-            request.json["unidad_medida"],
-            request.json["usuario"],  
-            request.json["fecha_registro"]):       
+            request.json["unidad_medida"],  
+            request.json["fecha_registro"],
+            usuario_actual._id):       
             return jsonify({
                 "estado" : "OK",
                 "mensaje": "Ingrediente modificado correctamente"
@@ -82,14 +82,14 @@ def modificarIngredinete():
 #cambia del estatus de activo a incativo del Ingrediente
 @ingrediente_route.route('/desactivar', methods=['POST'])
 @sesion.token_required('Usuario')
-def desactivarIngrediente():  
+def desactivarIngrediente(usuario_actual):  
     try: 
         if "_id" not in request.json:
             return jsonify({
                 "estado" : "ADVERTENCIA",
                 "mensaje": "Ha ocurrido un error, es necesario proporcionar un id de usuario para desactivar"
             }) 
-        if Controlador_Ingrediente.desactivar(request.json["_id"]):
+        if Controlador_Ingrediente.desactivar(request.json["_id"], usuario_actual._id):
             return jsonify({
                 "estado" : "OK",
                 "mensaje": "Ingrediente desactivado correctamente"
@@ -114,14 +114,14 @@ def desactivarIngrediente():
 # vuelave a cambiar el estatus del Ingrediente a activo
 @ingrediente_route.route('/reactivar', methods=['POST'])
 @sesion.token_required('Usuario')
-def reactivarIngrediente():  
+def reactivarIngrediente(usuario_actual):  
     try: 
         if "_id" not in request.json:
             return jsonify({
                 "estado" : "ADVERTENCIA",
                 "mensaje": "Ha ocurrido un error, es necesario proporcionar un id de usuario para desactivar"
             }) 
-        if Controlador_Ingrediente.reactivar(request.json["_id"]):
+        if Controlador_Ingrediente.reactivar(request.json["_id"], usuario_actual._id):
             return jsonify({
                 "estado" : "OK",
                 "mensaje": "Ingrediente Reactivado correctamente"
@@ -145,8 +145,8 @@ def reactivarIngrediente():
 
 # Consulta todos los ingredintes que estan almacenados en la base de datos
 @ingrediente_route.route("/consultar", methods=['GET'])
-@sesion.token_required('Usuario')
-def consultarIngredientes():
+@sesion.token_required(['Usuario','Admin'])
+def consultarIngredientes(usuario_actual):
     ingredientes = Controlador_Ingrediente.consultarallIngredientes()
     ingredientes_json = []
     for ingrediente in ingredientes:
@@ -159,7 +159,7 @@ def consultarIngredientes():
 
 @ingrediente_route.route("/buscar", methods=['POST'])
 @sesion.token_required('Usuario')
-def buscarIngredientes():
+def buscarIngredientes(usuario_actual):
     estado = "OK"
     mensaje = "Información consultada correctamente"
     

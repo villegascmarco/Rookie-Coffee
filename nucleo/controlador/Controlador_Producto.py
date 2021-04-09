@@ -6,7 +6,7 @@ from datetime import datetime
 ahora = datetime.now()
 ## este metodo agrega los productos a la base de datos  tanto como en la tabla de ingrediente producto,
 # se agrega la cantidad que va requerir en el ingrediente producto
-def agregar(nombre, descripcion, precio, usuario, fecha_registro, objIngredienteProducto):
+def agregar(nombre, descripcion, precio, fecha_registro, objIngredienteProducto, usuario):
     
     producto = Producto(
         nombre = nombre,
@@ -24,7 +24,7 @@ def agregar(nombre, descripcion, precio, usuario, fecha_registro, objIngrediente
 
 
 
-def modificar(_id, nombre, descripcion, precio, usuario, objIngredienteProducto):
+def modificar(_id, nombre, descripcion, precio, objIngredienteProducto, usuario):
     productoModificar =  db.session.query(Producto).filter(Producto._id == _id).first()
     productoModificar.nombre = nombre
     productoModificar.descripcion = descripcion
@@ -38,7 +38,7 @@ def modificar(_id, nombre, descripcion, precio, usuario, objIngredienteProducto)
     db.session.commit()
     return True
 
-def desactivar(_id):
+def desactivar(_id, usuario):
     productoDesactivar = db.session.query(Producto).filter(Producto._id == _id).first()
     productoDesactivar.estatus = 'Inactivo'
     db.session.add(productoDesactivar)
@@ -46,7 +46,7 @@ def desactivar(_id):
     db.session.commit()
     return True
 
-def reactivar(_id):
+def reactivar(_id, usuario):
     productoReactivar = db.session.query(Producto).filter(Producto._id == _id).first()
     productoReactivar.estatus = 'Activo'
     db.session.add(productoReactivar)

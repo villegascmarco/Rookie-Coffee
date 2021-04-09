@@ -11,15 +11,15 @@ producto_route = Blueprint('producto_route', __name__, url_prefix='/producto')
 #Agrega un producto nuevo a la base de datos
 @producto_route.route('/agregar', methods=['POST'])
 @sesion.token_required('Usuario')
-def agregarProducto():
+def agregarProducto(usuario_actual):
     try:
         if Controlador_Producto.agregar(
             request.json["nombre"],
             request.json["descripcion"],
-            request.json["precio"],
-            request.json["usuario"],  
+            request.json["precio"],  
             request.json["fecha_registro"],
-            request.json["ingrediente_producto"]):
+            request.json["ingrediente_producto"],
+            usuario_actual._id):
             return jsonify({
                 "estado" : "OK",
                 "mensaje": "Producto registrado correctamente"
@@ -44,7 +44,7 @@ def agregarProducto():
 # con la ID del producto
 @producto_route.route('/modificar', methods=['POST'])
 @sesion.token_required('Usuario')
-def modificarProducto():
+def modificarProducto(usuario_actual):
     try: 
         if "_id" not in request.json:
             return jsonify({
@@ -56,8 +56,8 @@ def modificarProducto():
             request.json["nombre"],
             request.json["descripcion"],
             request.json["precio"],
-            request.json["usuario"],
-            request.json["Ingrediente_producto"]):       
+            request.json["ingrediente_producto"],
+            usuario_actual._id):       
             return jsonify({
                 "estado" : "OK",
                 "mensaje": "Producto modificado correctamente"
@@ -82,14 +82,14 @@ def modificarProducto():
 #cambia del estatus de activo a incativo del producto
 @producto_route.route('/desactivar', methods=['POST'])
 @sesion.token_required('Usuario')
-def desactivarProducto():  
+def desactivarProducto(usuario_actual):  
     try: 
         if "_id" not in request.json:
             return jsonify({
                 "estado" : "ADVERTENCIA",
                 "mensaje": "Ha ocurrido un error, es necesario proporcionar un id de usuario para desactivar"
             }) 
-        if Controlador_Producto.desactivar(request.json["_id"]):
+        if Controlador_Producto.desactivar(request.json["_id"], usuario_actual._id):
             return jsonify({
                 "estado" : "OK",
                 "mensaje": "Producto desactivado correctamente"
@@ -114,14 +114,14 @@ def desactivarProducto():
 # vuelave a cambiar el estatus del producto a activo
 @producto_route.route('/reactivar', methods=['POST'])
 @sesion.token_required('Usuario')
-def reactivarProducto():  
+def reactivarProducto(usuario_actual):  
     try: 
         if "_id" not in request.json:
             return jsonify({
                 "estado" : "ADVERTENCIA",
                 "mensaje": "Ha ocurrido un error, es necesario proporcionar un id de usuario para desactivar"
             }) 
-        if Controlador_Producto.reactivar(request.json["_id"]):
+        if Controlador_Producto.reactivar(request.json["_id"], usuario_actual._id):
             return jsonify({
                 "estado" : "OK",
                 "mensaje": "Producto Ractivado correctamente"
@@ -146,13 +146,40 @@ def reactivarProducto():
         
  # Consulta todos los productos que estan almacenados en la base de datos
 @producto_route.route("/consultar", methods=['GET'])
-@sesion.token_required('Usuario')
-def consultarProductos():
+@sesion.token_required(['Usuario','Admin'])
+def consultarProductos(usuario_actual):
+    #consutamos todos los productos existentes
     productos = Controlador_Producto.consultarallproducto()
     producto_json = []
+    #setiamos los porductos
     for producto in productos:
         producto_dictionary = producto.__dict__
         del producto_dictionary['_sa_instance_state']
+        #consultamos la tabla de ingrediente producto
+        ingredientesP = Controlador_Ingrediente.consultarIngredientesXproducto(producto._id)
+        ingredientesP_json = []
+        #setiamos los ingrediente producto
+        for ingredienteP in ingredientesP:
+            ingredientesP_dictionary = ingredienteP.__dict__
+            #guardamos el id del ingrediente en una vaiable
+            idIngrediente = ingredientesP_dictionary["ingrediente"] 
+            # eliminamos el nombre del valor 
+            del ingredientesP_dictionary["ingrediente"]
+            #le cambiamos el nombre del valor junto con la variable
+            del ingredientesP_dictionary['_sa_instance_state']
+            #consultamos los ingredientes en el producto con la id que guardamos en la variable 
+            ingredientesxproducto = Controlador_Ingrediente.consultarIngredientenProductos(idIngrediente)
+            ixp_json =[]
+            #setiamos la consulta para tener sus ingredientes 
+            for ingredientexproducto in ingredientesxproducto:
+                ixp_dictionary = ingredientexproducto.__dict__
+                del ixp_dictionary['_sa_instance_state']
+                ixp_json.append(ixp_dictionary)
+             #la agrgamos como arreglo en la lista de ingrediente producto    
+            ingredientesP_dictionary["ingredientes"]= ixp_json
+            ingredientesP_json.append(ingredientesP_dictionary)
+        
+        producto_dictionary["ingrediente_producto"] = ingredientesP_json 
         producto_json.append(producto_dictionary)
     return jsonify(producto_json)
     
@@ -160,7 +187,7 @@ def consultarProductos():
 ### Buscar por la id el registro del producto 
 @producto_route.route("/buscar", methods=['POST'])
 @sesion.token_required('Usuario')
-def buscarProductos():
+def buscarProductos(usuario_actual):
     estado = "OK"
     mensaje = "Información consultada correctamente"
     

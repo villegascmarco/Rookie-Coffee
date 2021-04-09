@@ -1,10 +1,11 @@
 from nucleo.modelo.Ingrediente import Ingrediente, Ingrediente_producto
+from nucleo.controlador import controlador_log_acciones_usuario as log
 from app_main.conexion import db
 from datetime import datetime
 
 ahora = datetime.now()
 
-def agregar(nombre, descripcion, cantidad_disponible,unidad_medida, usuario, fecha_registro):
+def agregar(nombre, descripcion, cantidad_disponible,unidad_medida, fecha_registro, usuario):
     
     if cantidad_disponible >=1000 and unidad_medida == "g":
         convercion = cantidad_disponible/1000
@@ -24,11 +25,14 @@ def agregar(nombre, descripcion, cantidad_disponible,unidad_medida, usuario, fec
         fecha_registro = ahora.strftime("%d/%m/%Y  %H:%M:%S")
     )
     db.session.add(ingrediente)
-    db.session.commit()
+    db.session.flush()
+    
+    log.registrar_log(usuario,'Agregar',Ingrediente.__tablename__,ingrediente._id)
+    
     return True
 
 
-def modificar(_id, nombre, descripcion, cantidad_disponible,unidad_medida, usuario, fecha_registro):
+def modificar(_id, nombre, descripcion, cantidad_disponible,unidad_medida, fecha_registro, usuario):
     ingredienteModificar =  db.session.query(Ingrediente).filter(Ingrediente._id == _id).first()
     ingredienteModificar.nombre = nombre
     ingredienteModificar.descripcion = descripcion
@@ -38,21 +42,27 @@ def modificar(_id, nombre, descripcion, cantidad_disponible,unidad_medida, usuar
     fecha_registro = ahora.strftime("%d/%m/%Y  %H:%M:%S")
     ingredienteModificar.fecha_registro = fecha_registro
     db.session.add(ingredienteModificar)
-    db.session.commit()
+    db.session.flush()
+
+    log.registrar_log(usuario,'Modificar',Ingrediente.__tablename__,ingredienteModificar._id)
     return True
 
-def desactivar(_id):
+def desactivar(_id, usuario):
     ingredienteDesactivar = db.session.query(Ingrediente).filter(Ingrediente._id == _id).first()
     ingredienteDesactivar.estatus = 'Inactivo'
     db.session.add(ingredienteDesactivar)
-    db.session.commit()
+    db.session.flush()
+    
+    log.registrar_log(usuario,'Desactivar',Ingrediente.__tablename__,ingredienteDesactivar._id)
     return True
 
-def reactivar(_id):
+def reactivar(_id, usuario):
     ingredienteReactivar = db.session.query(Ingrediente).filter(Ingrediente._id == _id).first()
     ingredienteReactivar.estatus = 'Activo'
     db.session.add(ingredienteReactivar)
-    db.session.commit()
+    db.session.flush()
+    
+    log.registrar_log(usuario,'Reactivar',Ingrediente.__tablename__,ingredienteReactivar._id)
     return True
 
 def consultarallIngredientes():
@@ -113,17 +123,23 @@ def consultarIngrePro(_id):
         return Ingrediente_producto.query.all()
     else:
         return db.session.query(Ingrediente_producto).filter(Ingrediente_producto._id == _id).first()
-    
 
+def consultarIngredientesXproducto(producto):
+     #consultarproductosIngrediente = db.session.query(Ingrediente_producto).filter(Ingrediente_producto.producto.like(producto)).all()
+    return db.session.query(Ingrediente_producto).join(Ingrediente, Ingrediente._id == Ingrediente_producto._id).filter(Ingrediente_producto.producto == producto).all()
+   
+def consultarIngredientenProductos(Ingredient):
+     #consultarproductosIngrediente = db.session.query(Ingrediente_producto).filter(Ingrediente_producto.producto.like(producto)).all()
+    return db.session.query(Ingrediente).join(Ingrediente_producto, Ingrediente_producto.ingrediente == Ingrediente._id).filter(Ingrediente_producto.ingrediente == Ingredient).all()
+
+   
+   
+     
 def restarCantidadDisponible(_idProducto, CantidadComprada):
    ingrediente_producto = db.session.query(Ingrediente_producto).filter(Ingrediente_producto.producto == _idProducto).all()
-   
    for ingrepro in ingrediente_producto:
-       
        cantidadreque = ingrepro.cantidad_requerida*CantidadComprada
-       
        ingrediente_ingrediente = db.session.query(Ingrediente).filter(Ingrediente._id == ingrepro.ingrediente).first()
-
        if ingrediente_ingrediente.unidad_medida in ("kg", "l") :
            ingrediente_ingrediente.cantidad_disponible -= cantidadreque/1000
            
