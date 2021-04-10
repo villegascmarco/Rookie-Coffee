@@ -2,9 +2,9 @@
 from app_main.conexion import db
 from flask_sqlalchemy import SQLAlchemy
 #Importamos la clase UserMixin de  flask_login
-class Producto(db.Model):
+class producto(db.Model):
     
-    __tablename__ = 'Producto'
+    __tablename__ = 'producto'
     _id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50))
     descripcion = db.Column(db.String(100))
