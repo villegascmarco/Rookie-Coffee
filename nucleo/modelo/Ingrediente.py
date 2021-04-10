@@ -2,9 +2,9 @@
 from app_main.conexion import db
 from flask_sqlalchemy import SQLAlchemy
 
-class Ingrediente(db.Model):
+class ingrediente(db.Model):
     
-    __tablename__ = 'Ingrediente'
+    __tablename__ = 'ingrediente'
     _id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(45))
     descripcion = db.Column(db.String(45))
@@ -15,9 +15,9 @@ class Ingrediente(db.Model):
     fecha_registro = db.Column(db.String(45))
     
 
-class Ingrediente_producto(db.Model):
+class ingrediente_producto(db.Model):
     
-     __tablename__ = 'Ingrediente_producto'
+     __tablename__ = 'ingrediente_producto'
      _id = db.Column(db.Integer, primary_key=True)
      cantidad_requerida = db.Column(db.Float)
      producto = db.Column(db.Integer, nullable=False)
