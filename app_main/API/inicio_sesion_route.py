@@ -26,7 +26,7 @@ def login():
                 "mensaje":"Imposible autenticar, inicio de sesion no exitoso"
                 })
 
-    usuario = Usuario.query.filter_by(nombre_acceso=auth["username"]).first()   
+    usuario = Usuario.query.filter_by(nombre_acceso=auth["username"],estatus='Activo').first()   
 
     if not usuario:
         return jsonify({
@@ -44,8 +44,6 @@ def login():
     if usuario and check_password_hash(usuario.contrasena, auth["password"]):
         token = jwt.encode({'public_id': usuario._id, 'expiracion' : str(datetime.datetime.utcnow() + datetime.timedelta(minutes=30))}, current_app.config['SECRET_KEY'])  
         try:
-            print(request.json['dispositivo'])
-            print(request.json['direccion_ip'])
             sesion.registrar_inicio_sesion(
                     usuario._id,
                     datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S'),
@@ -62,7 +60,9 @@ def login():
 
         return jsonify({
                 'token' : token.decode('UTF-8'),
-                'rol': controlador_rol_usuario.consultar(usuario.rol_usuario).nombre
+                'rol': controlador_rol_usuario.consultar(usuario.rol_usuario).nombre,
+                'nombre' : "{} {} {}".format(usuario.nombre,usuario.apellido_1,usuario.apellido_2),
+                'nombre_acceso': usuario.nombre_acceso
             }) 
 
     return jsonify({

@@ -7,7 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 def agregar(nombre,apellido_1,apellido_2,rfc,nombre_acceso,contrasena,rol_usuario,usuario_actual_id):
 
-    usuarioVerificar = db.session.query(Usuario).filter(Usuario.nombre_acceso == nombre_acceso).first()
+    usuarioVerificar = db.session.query(Usuario).filter(Usuario.nombre_acceso == nombre_acceso,Usuario.estatus == 'Activo').first()
     if not usuarioVerificar:
         usuario = Usuario(
             nombre = nombre,
@@ -60,6 +60,10 @@ def desactivar(_id,usuario_actual_id):
 def reactivar(_id,usuario_actual_id):
     usuarioReactivar = db.session.query(Usuario).filter(Usuario._id == _id).first()
     usuarioReactivar.estatus = 'Activo'
+    
+    usuarioVerificar = db.session.query(Usuario).filter(Usuario.nombre_acceso == usuarioReactivar.nombre_acceso,Usuario.estatus == 'Activo').first()
+    if usuarioVerificar:
+        return False
 
     db.session.add(usuarioReactivar)
 

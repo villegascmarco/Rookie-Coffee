@@ -145,7 +145,7 @@ def reactivarIngrediente(usuario_actual):
 
 # Consulta todos los ingredintes que estan almacenados en la base de datos
 @ingrediente_route.route("/consultar", methods=['GET'])
-@sesion.token_required('Usuario')
+@sesion.token_required(['Usuario','Admin'])
 def consultarIngredientes(usuario_actual):
     ingredientes = Controlador_Ingrediente.consultarallIngredientes()
     ingredientes_json = []
