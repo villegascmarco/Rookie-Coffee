@@ -91,8 +91,7 @@ def consultar_semanal(requestJSON):
 
 
 def consultar_mensual(requestJSON):
-    today = datetime.date.today()
-    fecha_inicial = today - datetime.timedelta(days=today.month)
+    fecha_inicial = datetime.date.today().replace(day=1)
     fecha_final = fecha_inicial + datetime.timedelta(days=6)
 
     fecha_inicial = fecha_inicial.strftime('%Y-%m-%dT%H:%M:%S')
