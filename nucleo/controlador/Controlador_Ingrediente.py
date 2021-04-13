@@ -126,11 +126,13 @@ def consultarIngrePro(_id):
 
 def consultarIngredientesXproducto(producto):
      #consultarproductosIngrediente = db.session.query(Ingrediente_producto).filter(Ingrediente_producto.producto.like(producto)).all()
-    return db.session.query(Ingrediente_producto).join(Ingrediente, Ingrediente._id == Ingrediente_producto._id).filter(Ingrediente_producto.producto == producto).all()
+    lista = db.session.query(Ingrediente_producto).join(Ingrediente, Ingrediente._id == Ingrediente_producto.ingrediente).filter(Ingrediente_producto.producto == producto).all()
+    return lista
    
 def consultarIngredientenProductos(Ingredient):
      #consultarproductosIngrediente = db.session.query(Ingrediente_producto).filter(Ingrediente_producto.producto.like(producto)).all()
-    return db.session.query(Ingrediente).join(Ingrediente_producto, Ingrediente_producto.ingrediente == Ingrediente._id).filter(Ingrediente_producto.ingrediente == Ingredient).all()
+    lista = db.session.query(Ingrediente).join(Ingrediente_producto, Ingrediente_producto.ingrediente == Ingrediente._id).filter(Ingrediente_producto.ingrediente == Ingredient).all()
+    return lista
 
    
    

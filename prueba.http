@@ -119,9 +119,8 @@ Content-Type: application/json
     "_id": 3
 }
 ###
-
 GET http://glassware.pythonanywhere.com/producto/consultar HTTP/1.1
-x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjI1LCJleHBpcmFjaW9uIjoiMjAyMS0wNC0xMyAwMjoxNDozNC4xNzgzNTgifQ.nEGNoPBGmywwiKi3whQ9kw2jFc_2DsLO0lki3_0zKnI
+x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjI1LCJleHBpcmFjaW9uIjoiMjAyMS0wNC0xMyAwMjo0NTozOS4xNjc2MjUifQ.g6LRvG2a1kNpVZN5t1nyPfJgKcMRwmsrCf1-wmRkLXg
 ###
 
 GET http://127.0.0.1:5000/producto/consultar HTTP/1.1
@@ -133,8 +132,8 @@ x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjIsImV4cG
 
 LOGIN
 ###
-POST http://127.0.0.1:5000/security/login HTTP/1.1
-Authorization: Basic CandeCandelario:123
+POST http://glassware.pythonanywhere.com/security/login HTTP/1.1
+Authorization: Basic moilovemachine420:123
 Content-Type: application/json
 
 {
@@ -285,3 +284,20 @@ Content-Type: application/json
 ###
 GET  http://127.0.0.1:5000/producto/consultar HTTP/1.1
 x-access-tokens:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjIsImV4cGlyYWNpb24iOiIyMDIxLTA0LTA2IDIwOjQ2OjQzLjI3NTIyMSJ9.krGo_Xj0noDlvcWgF4_8b9wm7WYgM-SoWQ7hGiYT9eI
+
+###
+POST http://127.0.0.1:5000/security/login HTTP/1.1
+Authorization: Basic CandeCandelario:123
+Content-Type: application/json
+
+{
+    "dispositivo" : "MOZILLA",
+    "direccion_ip": "177.228.43.142"
+}
+
+###
+GET http://127.0.0.1:5000/producto/consultar HTTP/1.1
+x-access-tokens:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjIsImV4cGlyYWNpb24iOiIyMDIxLTA0LTEzIDIzOjA1OjU3LjgzMTY2MyJ9.NTUarYJV0gTl9dLetemyjy6adOt0QYfQw6WYkgmSLpA
+###
+GET http://127.0.0.1:5000/ingrediente/consultar HTTP/1.1
+x-access-tokens:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjIsImV4cGlyYWNpb24iOiIyMDIxLTA0LTEzIDIyOjM1OjE3LjM2MDc1MCJ9.7q912Zkv4HdTm7oX6BdGBSCqLDrpE5Z207Mrpfvjs-o
