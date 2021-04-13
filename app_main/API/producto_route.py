@@ -169,19 +169,19 @@ def consultarProductos(usuario_actual):
             #le cambiamos el nombre del valor junto con la variable
             # del ingredientesP_dictionary['_sa_instance_state']
             #consultamos los ingredientes en el producto con la id que guardamos en la variable 
-            ingredientesxproducto = Controlador_Ingrediente.consultarIngredientenProductos(idIngrediente)
-            ixp_json =[]
-            #setiamos la consulta para tener sus ingredientes 
-            for ingredientexproducto in ingredientesxproducto:
-                # ixp_dictionary = ingredientexproducto.__dict__
-                # del ixp_dictionary['_sa_instance_state']
-                ixp_json.append(
-                    jsonify({
-                        "_id": ingredientexproducto._id,
-                        "cantidad_requerida":ingredienteP.cantidad_requerida,
-                        "ingrediente":ingredientexproducto.nombre
-                    })
-                )
+            # ingredientesxproducto = Controlador_Ingrediente.consultarIngredientenProductos(idIngrediente)
+            # ixp_json =[]
+            # #setiamos la consulta para tener sus ingredientes 
+            # for ingredientexproducto in ingredientesxproducto:
+            #     # ixp_dictionary = ingredientexproducto.__dict__
+            #     # del ixp_dictionary['_sa_instance_state']
+            #     ixp_json.append(
+            #         jsonify({
+            #             "_id": ingredientexproducto._id,
+            #             "cantidad_requerida":ingredienteP.cantidad_requerida,
+            #             "ingrediente":ingredientexproducto.nombre
+            #         })
+            #     )
             #la agrgamos como arreglo en la lista de ingrediente producto    
             # ingredientesP_dictionary["ingredientes"]= ixp_json
             # ingredientesP_json.append(ingredientesP_dictionary)
