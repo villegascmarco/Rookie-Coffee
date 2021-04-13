@@ -35,7 +35,7 @@ def consultar(usuario_actual):
 
 
 @venta_route.route('/registrar', methods=['POST'])
-@sesion.token_required('Usuario')
+@sesion.token_required('Admin')
 def registrar(usuario_actual):
     estado = ''
     mensaje = ''
