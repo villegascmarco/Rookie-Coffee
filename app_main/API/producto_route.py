@@ -148,44 +148,45 @@ def reactivarProducto(usuario_actual):
 @producto_route.route("/consultar", methods=['GET'])
 @sesion.token_required(['Usuario','Admin'])
 def consultarProductos(usuario_actual):
-    try:
-        #consutamos todos los productos existentes
-        productos = Controlador_Producto.consultarallproducto()
-        producto_json = []
-        #setiamos los porductos
-        for producto in productos:
-            producto_dictionary = producto.__dict__
-            del producto_dictionary['_sa_instance_state']
-            #consultamos la tabla de ingrediente producto
-            ingredientesP = Controlador_Ingrediente.consultarIngredientesXproducto(producto._id)
-            ingredientesP_json = []
-            #setiamos los ingrediente producto
-            for ingredienteP in ingredientesP:
-                # ingredientesP_dictionary = ingredienteP.__dict__
-                #guardamos el id del ingrediente en una vaiable
-                idIngrediente = ingredienteP.ingrediente
-                # eliminamos el nombre del valor 
-                # del ingredientesP_dictionary["ingrediente"]
-                #le cambiamos el nombre del valor junto con la variable
-                # del ingredientesP_dictionary['_sa_instance_state']
-                #consultamos los ingredientes en el producto con la id que guardamos en la variable 
-                ingredientesxproducto = Controlador_Ingrediente.consultarIngredientenProductos(idIngrediente)
-                ixp_json =[]
-                #setiamos la consulta para tener sus ingredientes 
-                for ingredientexproducto in ingredientesxproducto:
-                    # ixp_dictionary = ingredientexproducto.__dict__
-                    # del ixp_dictionary['_sa_instance_state']
-                    ixp_json.append(
-                        jsonify({
-                            "_id": ingredientexproducto._id,
-                            "cantidad_requerida":ingredienteP.cantidad_requerida,
-                            "ingrediente":ingredientexproducto.nombre
-                        })
-                    )
-                #la agrgamos como arreglo en la lista de ingrediente producto    
-                # ingredientesP_dictionary["ingredientes"]= ixp_json
-                # ingredientesP_json.append(ingredientesP_dictionary)
-                ingredientesP_json.append(jsonify({
+    # try:
+    #consutamos todos los productos existentes
+    productos = Controlador_Producto.consultarallproducto()
+    producto_json = []
+    #setiamos los porductos
+    for producto in productos:
+        producto_dictionary = producto.__dict__
+        del producto_dictionary['_sa_instance_state']
+        #consultamos la tabla de ingrediente producto
+        ingredientesP = Controlador_Ingrediente.consultarIngredientesXproducto(producto._id)
+        ingredientesP_json = []
+        #setiamos los ingrediente producto
+        for ingredienteP in ingredientesP:
+            # ingredientesP_dictionary = ingredienteP.__dict__
+            #guardamos el id del ingrediente en una vaiable
+            idIngrediente = ingredienteP.ingrediente
+            # eliminamos el nombre del valor 
+            # del ingredientesP_dictionary["ingrediente"]
+            #le cambiamos el nombre del valor junto con la variable
+            # del ingredientesP_dictionary['_sa_instance_state']
+            #consultamos los ingredientes en el producto con la id que guardamos en la variable 
+            ingredientesxproducto = Controlador_Ingrediente.consultarIngredientenProductos(idIngrediente)
+            ixp_json =[]
+            #setiamos la consulta para tener sus ingredientes 
+            for ingredientexproducto in ingredientesxproducto:
+                # ixp_dictionary = ingredientexproducto.__dict__
+                # del ixp_dictionary['_sa_instance_state']
+                ixp_json.append(
+                    jsonify({
+                        "_id": ingredientexproducto._id,
+                        "cantidad_requerida":ingredienteP.cantidad_requerida,
+                        "ingrediente":ingredientexproducto.nombre
+                    })
+                )
+            #la agrgamos como arreglo en la lista de ingrediente producto    
+            # ingredientesP_dictionary["ingredientes"]= ixp_json
+            # ingredientesP_json.append(ingredientesP_dictionary)
+            ingredientesP_json.append(
+                jsonify({
                     "_id":ingredienteP._id,
                     "cantidad_requerida":ingredienteP.cantidad_requerida,
                     "producto":ingredienteP.producto,
@@ -193,20 +194,21 @@ def consultarProductos(usuario_actual):
                     "estatus":ingredienteP.estatus,
                     "usuario":ingredienteP.usuario,
                     "fecha_registro":ingredienteP.fecha_registro
-                }))
-            
-            producto_dictionary["ingrediente_producto"] = ingredientesP_json 
-            producto_json.append(producto_dictionary)
-        return jsonify(producto_json)
-    except Exception as e:
-        estado = "ERROR"
-        mensaje = "Ha ocurrido un error al modificar el registro! Por favor verificalo con un administrador o revisa tu solicitud"
+                })
+            )
         
-        return jsonify({
-            "estado"  : estado,
-            "mensaje" : mensaje,
-            "excepcion":str(e)
-        })
+        producto_dictionary["ingrediente_producto"] = ingredientesP_json 
+        producto_json.append(producto_dictionary)
+    return jsonify(producto_json)
+    # except Exception as e:
+    #     estado = "ERROR"
+    #     mensaje = "Ha ocurrido un error al modificar el registro! Por favor verificalo con un administrador o revisa tu solicitud"
+        
+    #     return jsonify({
+    #         "estado"  : estado,
+    #         "mensaje" : mensaje,
+    #         "excepcion":str(e)
+    #     })
 
 
 
