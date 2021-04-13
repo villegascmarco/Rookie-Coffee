@@ -178,8 +178,8 @@ def consultarProductos(usuario_actual):
                     ixp_json.append(
                         jsonify({
                             "_id": ingredientexproducto._id,
-                            "cantidad_requerida":ingredientexproducto.cantidad_requerida,
-                            "ingrediente":ingredientexproducto.ingrediente
+                            "cantidad_requerida":ingredienteP.cantidad_requerida,
+                            "ingrediente":ingredientexproducto.nombre
                         })
                     )
                 #la agrgamos como arreglo en la lista de ingrediente producto    
