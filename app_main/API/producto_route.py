@@ -183,8 +183,17 @@ def consultarProductos(usuario_actual):
                         })
                     )
                 #la agrgamos como arreglo en la lista de ingrediente producto    
-                ingredientesP_dictionary["ingredientes"]= ixp_json
-                ingredientesP_json.append(ingredientesP_dictionary)
+                # ingredientesP_dictionary["ingredientes"]= ixp_json
+                # ingredientesP_json.append(ingredientesP_dictionary)
+                ingredientesP_json.append(jsonify({
+                    "_id":ingredienteP._id,
+                    "cantidad_requerida":ingredienteP.cantidad_requerida,
+                    "producto":ingredienteP.producto,
+                    "ingrediente":ingredienteP.ingrediente,
+                    "estatus":ingredienteP.estatus,
+                    "usuario":ingredienteP.usuario,
+                    "fecha_registro":ingredienteP.fecha_registro
+                }))
             
             producto_dictionary["ingrediente_producto"] = ingredientesP_json 
             producto_json.append(producto_dictionary)
