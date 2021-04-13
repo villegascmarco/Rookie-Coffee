@@ -199,7 +199,8 @@ def consultarProductos(usuario_actual):
         
         producto_dictionary["ingrediente_producto"] = ingredientesP_json 
         producto_json.append(producto_dictionary)
-    return make_response(jsonify(producto_json),200)
+    # return make_response(jsonify(producto_json),200)
+    return make_response(jsonify({"ok":"ok"}}),200)
     # except Exception as e:
     #     estado = "ERROR"
     #     mensaje = "Ha ocurrido un error al modificar el registro! Por favor verificalo con un administrador o revisa tu solicitud"
