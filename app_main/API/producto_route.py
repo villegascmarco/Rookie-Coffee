@@ -1,5 +1,5 @@
 import json 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request,make_response
 from nucleo.controlador import Controlador_Producto, Controlador_Ingrediente
 from nucleo.controlador import controlador_inicio_sesion as sesion
 #from nucleo.controlador import controlador_inicio_sesion as sesion
@@ -199,7 +199,7 @@ def consultarProductos(usuario_actual):
         
         producto_dictionary["ingrediente_producto"] = ingredientesP_json 
         producto_json.append(producto_dictionary)
-    return jsonify(producto_json)
+    return make_response(jsonify(producto_json),200)
     # except Exception as e:
     #     estado = "ERROR"
     #     mensaje = "Ha ocurrido un error al modificar el registro! Por favor verificalo con un administrador o revisa tu solicitud"
