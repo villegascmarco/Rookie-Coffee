@@ -32,6 +32,8 @@ def buscar(request):
     print(metodo_busqueda)
     if metodo_busqueda == 'especifico':
         return consultar_especifico(requestJSON)
+    if metodo_busqueda == 'dia':
+        return consultar_dia(requestJSON)
     if metodo_busqueda == 'general':
         return consultar_general()
     if metodo_busqueda == 'semanal':
@@ -65,6 +67,26 @@ def consultar_especifico(requestJSON):
         ventas_json.append(diccionario)
     return ventas_json, numero_registros
 
+def consultar_dia(requestJSON):
+    today = datetime.date.today()
+
+    fecha_inicial = today.strftime('%Y-%m-%dT%H:%M:%S')
+    fecha_final = str(today)+'T:23:59:59'
+
+    ventas = Venta.query.filter(
+        Venta.fecha.between(fecha_inicial, fecha_final))
+
+    ventas_json = []
+    numero_registros = 0
+    for venta in ventas:
+        numero_registros += 1
+        diccionario = venta.__dict__
+        del diccionario['_sa_instance_state']
+        diccionario['detalle_venta'] = buscar_venta(venta._id)
+        diccionario['usuario'] = controlador_usuario.consultar(
+            venta.usuario).nombre_acceso
+        ventas_json.append(diccionario)
+    return ventas_json, numero_registros
 
 def consultar_semanal(requestJSON):
     today = datetime.date.today()
