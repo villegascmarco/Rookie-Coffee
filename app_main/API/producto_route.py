@@ -197,7 +197,7 @@ def consultarProductos(usuario_actual):
                     "_id":ingredienteP._id,
                     "cantidad_requerida":ingredienteP.cantidad_requerida,
                     "producto":ingredienteP.producto,
-                    "ingrediente":ingredienteP.ingrediente,
+                    "ingrediente":ixp_json,
                     "estatus":ingredienteP.estatus,
                     "usuario":ingredienteP.usuario,
                     "fecha_registro":ingredienteP.fecha_registro

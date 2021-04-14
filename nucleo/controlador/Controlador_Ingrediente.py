@@ -115,6 +115,13 @@ def reactivarIgrePro(_id):
     db.session.add(a)
     return True
 
+
+def eliminarIngrePro(_id):
+    ingredienteProductoEliminar =  db.session.query(Ingrediente_producto).filter(Ingrediente_producto.producto.like(_id)).all()
+    for xdd in ingredienteProductoEliminar:
+        db.session.delete(xdd)
+    return True
+
 def consultarallIngredientesProductos():
     return Ingrediente_producto.query.all()
 

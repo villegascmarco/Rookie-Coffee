@@ -32,9 +32,9 @@ def modificar(_id, nombre, descripcion, precio, objIngredienteProducto, usuario)
     productoModificar.usuario = usuario
     productoModificar.fecha_registro = ahora.strftime("%d/%m/%Y  %H:%M:%S")
     db.session.add(productoModificar)
-    for x in objIngredienteProducto:
-        Controlador_Ingrediente.modificarIgrePro(x)
-    
+    Controlador_Ingrediente.eliminarIngrePro(productoModificar._id)
+    for xd in objIngredienteProducto:
+        Controlador_Ingrediente.agregarIgrePro(xd, usuario, _id)
     db.session.commit()
     return True
 
