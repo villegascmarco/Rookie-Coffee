@@ -93,12 +93,11 @@ def agregarIgrePro(objeto ,usuario, producto):
 
 def modificarIgrePro(objeto):
     ingredienteProductoModificar =  db.session.query(Ingrediente_producto).filter(Ingrediente_producto._id == objeto.get("_id")).first()
-    print(ingredienteProductoModificar)
-    ingredienteProductoModificar.cantidad_requerida = objeto.get("cantidad_requerida"),
-    ingredienteProductoModificar.ingrediente = objeto.get("ingrediente"),
+    ingredienteProductoModificar.cantidad_requerida = objeto.get("cantidad_requerida")
+    ingredienteProductoModificar.ingrediente = objeto.get("ingrediente")
     ingredienteProductoModificar.fecha_registro = ahora.strftime("%d/%m/%Y  %H:%M:%S")
     db.session.add(ingredienteProductoModificar)
-    
+    db.session.flush()
     return True
 
 def desactivarIgrePro(_id):
