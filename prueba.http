@@ -156,6 +156,33 @@ POST http://127.0.0.1:5000/security/logout HTTP/1.1
 x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOjIsImV4cGlyYWNpb24iOiIyMDIxLTAzLTIzIDAzOjAzOjAyLjIwNDczNyJ9.6dTy44YD5oD9K__0ZjXKAP3rmDYc2gYMGw_a6IIsQxE
 
 
+
+{
+    "_id": 2,
+    "nombre": "Café Capuccino",
+    "descripcion": "Café Capuccino grande",
+    "precio": "45",
+    "fecha_registro": "",
+    "ingrediente_producto": [{
+        "_id": 5,
+        "cantidad_requerida": 16,
+        "estatus": "Activo",
+        "fecha_registro": "2021-04-10T02:52:04",
+        "ingrediente": 3,
+        "producto": 2,
+        "usuario": 25
+    }, {
+        "_id": 6,
+        "cantidad_requerida": 14,
+        "estatus": "Activo",
+        "fecha_registro": "2021-04-10T02:52:04",
+        "ingrediente": 3,
+        "producto": 2,
+        "usuario": 25
+    }]
+}
+
+
 ###
 
 GET http://glassware.pythonanywhere.com/producto/consultar HTTP/1.1
