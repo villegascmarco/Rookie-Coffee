@@ -28,7 +28,7 @@ def buscar(request):
     requestJSON = request.json
 
     metodo_busqueda = obtener_validar(requestJSON, 'metodo_busqueda')
-    print(metodo_busqueda)
+   
     if metodo_busqueda == 'especifico':
         return consultar_especifico(requestJSON)
     if metodo_busqueda == 'dia':
@@ -116,9 +116,7 @@ def consultar_mensual(requestJSON):
     fecha_final = fecha_inicial + datetime.timedelta(days=6)
 
     fecha_inicial = fecha_inicial.strftime('%Y-%m-%dT%H:%M:%S')
-    print(fecha_inicial)
     fecha_final = str(last_day_of_month(fecha_final))+'T:23:59:59'
-    print(fecha_final)
 
     ventas = Venta.query.filter(
         Venta.fecha.between(fecha_inicial, fecha_final))
