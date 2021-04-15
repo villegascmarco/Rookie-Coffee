@@ -81,13 +81,10 @@ def subir_foto(archivo):
         api_key="571627822527218",
         api_secret="A778wE2JSx45FRKIcbhw7o5q7z8")
 
-    try:
-        respuesta = cloudinary.uploader.upload(archivo)
-    except Exception:
-        raise Exception(f"Pon algo chido mi Jendrips")
-
+    respuesta = cloudinary.uploader.upload(archivo)
+   
     if type(respuesta) != dict:
-        raise Exception(f"Por si acaso xddd")
+        raise Exception(f"Hubo un problema al subir la foto al servidor")
 
     return respuesta['public_id']
 
@@ -100,12 +97,9 @@ def eliminar_foto(public_id):
         api_key="571627822527218",
         api_secret="A778wE2JSx45FRKIcbhw7o5q7z8")
 
-    try:
-        respuesta = cloudinary.uploader.destroy(public_id)
-    except Exception:
-        raise Exception(f"Pon algo chido mi Jendrips")
+    respuesta = cloudinary.uploader.destroy(public_id)
 
     if type(respuesta) != dict:
-        raise Exception(f"Por si acaso xddd")
+        raise Exception(f"Hubo un problema al subir la foto al servidor")
 
     return respuesta
