@@ -78,7 +78,7 @@ def subir_foto(archivo):
         cloud_name="dg8xjgxd0",
         api_key="571627822527218",
         api_secret="A778wE2JSx45FRKIcbhw7o5q7z8",
-        api_proxy= 'http://api.cloudinary.com:3128')
+        api_proxy= 'http://api.cloudinary.com:443')
 
     respuesta = cloudinary.uploader.upload(archivo)
    
@@ -95,7 +95,7 @@ def eliminar_foto(public_id):
         cloud_name="dg8xjgxd0",
         api_key="571627822527218",
         api_secret="A778wE2JSx45FRKIcbhw7o5q7z8",
-        api_proxy= 'http://api.cloudinary.com:3128')
+        api_proxy= 'http://api.cloudinary.com:443')
 
     respuesta = cloudinary.uploader.destroy(public_id)
 
