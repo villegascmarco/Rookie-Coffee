@@ -5,5 +5,4 @@ Flask-Cors==3.0.10
 bcrypt==3.2.0
 PyJWT==1.7.1
 mysqlclient==2.0.3
-urllib3==1.26.4
 cloudinary==1.25.0

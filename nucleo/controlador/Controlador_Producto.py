@@ -4,8 +4,6 @@ from app_main.conexion import db
 from datetime import datetime
 import cloudinary
 import cloudinary.uploader
-import cloudinary.api
-import urllib.parse
 import os.path
 
 ahora = datetime.now()
