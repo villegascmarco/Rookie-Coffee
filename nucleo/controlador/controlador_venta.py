@@ -165,6 +165,9 @@ def buscar_id(_id):
     diccionario = venta.__dict__
     del diccionario['_sa_instance_state']
     diccionario['detalle_venta'] = buscar_venta(venta._id)
+    usuario = controlador_usuario.consultar(
+            venta.usuario)
+    diccionario['usuario'] = f'{usuario.nombre} {usuario.apellido_1} {usuario.apellido_2}'
 
     return diccionario
 
