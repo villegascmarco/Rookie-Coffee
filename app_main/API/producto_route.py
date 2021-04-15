@@ -163,6 +163,8 @@ def consultarProductos(usuario_actual):
         if producto_dictionary['foto']:
             id_producto=producto_dictionary['foto']
             producto_dictionary['foto']= f'http://res.cloudinary.com/dg8xjgxd0/image/upload/v1618438638/{ id_producto }.jpg'
+        else:
+            producto_dictionary['foto']= f''
         #consultamos la tabla de ingrediente producto
         ingredientesP = Controlador_Ingrediente.consultarIngredientesXproducto(producto._id)
         ingredientesP_json = []
