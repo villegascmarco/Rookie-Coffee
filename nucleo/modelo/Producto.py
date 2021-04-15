@@ -9,6 +9,7 @@ class Producto(db.Model):
     nombre = db.Column(db.String(50))
     descripcion = db.Column(db.String(100))
     precio = db.Column(db.Float)
+    foto = db.Column(db.String(24))
     estatus = db.Column(db.String(64), nullable=False,default='Activo')
     usuario = db.Column(db.Integer, nullable=False)
     fecha_registro = db.Column(db.String(45))

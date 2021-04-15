@@ -23,8 +23,7 @@ def obtener_validar(json, atributo):
 
 def buscar(request):
     if not request.json:
-        except Exception:
-            raise Exception("Formato JSON incorrecto.")
+        raise Exception("Formato JSON incorrecto.")
 
     requestJSON = request.json
 
