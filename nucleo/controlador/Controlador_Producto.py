@@ -12,9 +12,6 @@ ahora = datetime.now()
 def agregar(nombre, descripcion, precio,foto, fecha_registro, objIngredienteProducto, usuario):
     # url_id = subir_foto(foto)
     url_id = foto
-    if type(foto) == str:
-        raise Exception(
-            'Formato incorrecto en foto.')
     producto = Producto(
         nombre = nombre,
         descripcion = descripcion,
@@ -40,9 +37,6 @@ def modificar(_id, nombre, descripcion, precio,foto, objIngredienteProducto, usu
 
     # eliminar_foto(productoModificar.foto)
     # productoModificar.foto=subir_foto(foto)
-    if type(foto) == str:
-        raise Exception(
-            'Formato incorrecto en foto.')
     productoModificar.foto=foto
 
     productoModificar.usuario = usuario
