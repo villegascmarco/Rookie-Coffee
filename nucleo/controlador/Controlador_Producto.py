@@ -10,7 +10,11 @@ ahora = datetime.now()
 ## este metodo agrega los productos a la base de datos  tanto como en la tabla de ingrediente producto,
 # se agrega la cantidad que va requerir en el ingrediente producto
 def agregar(nombre, descripcion, precio,foto, fecha_registro, objIngredienteProducto, usuario):
-    url_id = subir_foto(foto)
+    # url_id = subir_foto(foto)
+    url_id = foto
+    if type(foto) == str:
+        raise Exception(
+            'Formato incorrecto en foto.')
     producto = Producto(
         nombre = nombre,
         descripcion = descripcion,
@@ -34,8 +38,12 @@ def modificar(_id, nombre, descripcion, precio,foto, objIngredienteProducto, usu
     productoModificar.descripcion = descripcion
     productoModificar.precio = precio
 
-    eliminar_foto(productoModificar.foto)
-    productoModificar.foto=subir_foto(foto)
+    # eliminar_foto(productoModificar.foto)
+    # productoModificar.foto=subir_foto(foto)
+    if type(foto) == str:
+        raise Exception(
+            'Formato incorrecto en foto.')
+    productoModificar.foto=foto
 
     productoModificar.usuario = usuario
     productoModificar.fecha_registro = ahora.strftime("%d/%m/%Y  %H:%M:%S")
@@ -71,35 +79,35 @@ def consultar(_id):
 def consultarallproducto():
     return Producto.query.all()
 
-def subir_foto(archivo):
-    if not archivo:
-        return ''
-    cloudinary.config(
-        cloud_name="dg8xjgxd0",
-        api_key="571627822527218",
-        api_secret="A778wE2JSx45FRKIcbhw7o5q7z8",
-        api_proxy= 'http://api.cloudinary.com:443')
+# def subir_foto(archivo):
+#     if not archivo:
+#         return ''
+#     cloudinary.config(
+#         cloud_name="dg8xjgxd0",
+#         api_key="571627822527218",
+#         api_secret="A778wE2JSx45FRKIcbhw7o5q7z8",
+#         api_proxy= 'http://api.cloudinary.com:443')
 
-    respuesta = cloudinary.uploader.upload(archivo)
+#     respuesta = cloudinary.uploader.upload(archivo)
    
-    if type(respuesta) != dict:
-        raise Exception(f"Hubo un problema al subir la foto al servidor")
+#     if type(respuesta) != dict:
+#         raise Exception(f"Hubo un problema al subir la foto al servidor")
 
-    return respuesta['public_id']
+#     return respuesta['public_id']
 
-def eliminar_foto(public_id):
-    if not public_id:
-        return
+# def eliminar_foto(public_id):
+#     if not public_id:
+#         return
 
-    cloudinary.config(
-        cloud_name="dg8xjgxd0",
-        api_key="571627822527218",
-        api_secret="A778wE2JSx45FRKIcbhw7o5q7z8",
-        api_proxy= 'http://api.cloudinary.com:443')
+#     cloudinary.config(
+#         cloud_name="dg8xjgxd0",
+#         api_key="571627822527218",
+#         api_secret="A778wE2JSx45FRKIcbhw7o5q7z8",
+#         api_proxy= 'http://api.cloudinary.com:443')
 
-    respuesta = cloudinary.uploader.destroy(public_id)
+#     respuesta = cloudinary.uploader.destroy(public_id)
 
-    if type(respuesta) != dict:
-        raise Exception(f"Hubo un problema al subir la foto al servidor")
+#     if type(respuesta) != dict:
+#         raise Exception(f"Hubo un problema al subir la foto al servidor")
 
-    return respuesta
+#     return respuesta
