@@ -144,23 +144,33 @@ def consultarIngredientenProductos(Ingredient):
    
      
 def restarCantidadDisponible(_idProducto, CantidadComprada):
-   ingrediente_producto = db.session.query(Ingrediente_producto).filter(Ingrediente_producto.producto == _idProducto).all()
-   for ingrepro in ingrediente_producto:
-       cantidadreque = ingrepro.cantidad_requerida*CantidadComprada
-       ingrediente_ingrediente = db.session.query(Ingrediente).filter(Ingrediente._id == ingrepro.ingrediente).first()
-       if ingrediente_ingrediente.unidad_medida in ("kg", "l") :
-           ingrediente_ingrediente.cantidad_disponible -= cantidadreque/1000
-           
-           if ingrediente_ingrediente.cantidad_disponible < 1:
-               if ingrediente_ingrediente.unidad_medida == "kg":
-                   ingrediente_ingrediente.unidad_medida = "g"
-               else:
-                   ingrediente_ingrediente.unidad_medida = "ml" 
+    ingrediente_producto = db.session.query(Ingrediente_producto).filter(Ingrediente_producto.producto == _idProducto).all()
+    for ingrepro in ingrediente_producto:
+        cantidadreque = ingrepro.cantidad_requerida*CantidadComprada
+        ingrediente_ingrediente = db.session.query(Ingrediente).filter(Ingrediente._id == ingrepro.ingrediente).first()
+        if ingrediente_ingrediente.unidad_medida in ("kg", "l") :
+            
+            ingrediente_ingrediente.cantidad_disponible -= cantidadreque/1000
+
+            
+            if ingrediente_ingrediente.cantidad_disponible < 1:
+                if ingrediente_ingrediente.unidad_medida == "kg":
+                    ingrediente_ingrediente.unidad_medida = "g"
+                else:
+                    ingrediente_ingrediente.unidad_medida = "ml" 
                           
-               ingrediente_ingrediente.cantidad_disponible *= 1000
-       else:
-        ingrediente_ingrediente.cantidad_disponible -= cantidadreque
+                ingrediente_ingrediente.cantidad_disponible *= 1000
+            
+            if ingrediente_ingrediente.cantidad_disponible < 0:
+                ingrediente_ingrediente.cantidad_disponible = 0
+            
+        else:
+
+            if ingrediente_ingrediente.cantidad_disponible - cantidadreque < 0:
+                ingrediente_ingrediente.cantidad_disponible
+            else:
+                ingrediente_ingrediente.cantidad_disponible -= cantidadreque
               
-       db.session.add(ingrediente_ingrediente)  
+        db.session.add(ingrediente_ingrediente)  
 
     

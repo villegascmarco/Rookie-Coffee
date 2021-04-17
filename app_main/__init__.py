@@ -11,7 +11,7 @@ from .API.inicio_sesion_route import inicio_sesion_route
 from .API.venta_route import venta_route
 from .API.producto_route import producto_route 
 from .API.ingrediente_route import ingrediente_route
-from .API.ingredienteProducto_route import ingredienteProducto_route
+
 
 def create_app():
     # Creamos una instancia de Flask
@@ -29,7 +29,7 @@ def create_app():
     app.register_blueprint(venta_route)
     app.register_blueprint(producto_route)
     app.register_blueprint(ingrediente_route)
-    app.register_blueprint(ingredienteProducto_route)
+    
 
     app.config.from_json(DB_CONFIGURACION)
 
